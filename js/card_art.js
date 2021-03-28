@@ -24,9 +24,12 @@ function generate() {
     textbox: 'img/generator/layout/textbox_follower.png',
     border: 'img/generator/layout/border.png'
   };
-  loadImages(sources, function download(images) {
+  loadImages(sources, function(images) {
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, 1920, 1120);
+    console.log(images)
+    console.log(images.textbox)
+    console.log(images.border)
     ctx.drawImage(images.textbox, 0, 0);
     ctx.drawImage(images.border, 0, 0);
     download(canvas.toDataURL('image/png', 1.0), "card", "image/png");
