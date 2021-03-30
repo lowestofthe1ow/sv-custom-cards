@@ -2,13 +2,21 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Lol</title>
   </head>
   <body>
     <script type="text/javascript" src="js/fabric.min.js"></script>
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
       <button onclick="generate()">Generate card</button>
-      <canvas id="cardTemplate" width="1920" height="1120" style="display: none;"></canvas>
+      <form>
+        <label for="form_name">Name:</label>
+        <input type="text" id="form_name" value="name"/><br />
+        <label for="form_text1">Text:</label>
+        <textarea id="form_text1" rows="12" cols="50"></textarea><br />
+        <label for="form_text2">Text:</label>
+        <textarea id="form_text2" rows="12" cols="50"></textarea><br />
+      </form>
+      <canvas id="cardTemplate" width="1920" height="1120"></canvas>
   </body>
-
 </html>
