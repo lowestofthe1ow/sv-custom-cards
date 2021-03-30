@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "Seagull";
+  src: url(font/seag.ttf);
+}
+
+body {
+  font-family: "Seagull";
+}
