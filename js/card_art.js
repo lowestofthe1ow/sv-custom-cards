@@ -26,8 +26,13 @@ function generate() {
   // Number of text lines (Followers only)
   var lines1 = getLines(text1) < 5 ? 5 : getLines(text1);
   var lines2 = getLines(text2) < (10 - lines1) ? 10 - lines1 : getLines(text2);
-  if (lines2 > 5 && getLines(text1) < 5) {
-    lines1 = getLines(text1);
+  if (lines2 > 5) {
+    if (getLines(text1) < 10 - lines2) {
+      lines1 = 10 - lines2;
+      console.log(lines1);
+    } else {
+      lines1 = getLines(text1);
+    }
   };
 
   // Create canvas
@@ -111,8 +116,8 @@ function drawTextBox(type, lines1, lines2, canvas) {
     canvas.add(new fabric.Image(loadedImages[4], {top: 0, left: 0}));
     for (var i = 0; i < lines1-1; i++) {
       canvas.add(new fabric.Image(loadedImages[1], {top: 394+(40*i), left: 753}));
-      lineDrawPositionY = 394+(40*i);
     };
+    lineDrawPositionY = 354+(40*i);
     canvas.add(new fabric.Image(loadedImages[2], {top: lineDrawPositionY+40, left: 753}));
     lineDrawPositionY += 197;
     for (var i = 0; i < lines2 - 1; i++) {
