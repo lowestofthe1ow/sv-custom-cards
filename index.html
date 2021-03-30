@@ -4,41 +4,11 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
   <body>
-    <div id="main">
-      <img src="img/ui/logo.png" id="logo"/>
-      <br /><br /><br />
-      <div class="content">
-        <br />
-        <p class="heading">Custom Card Generator</p>
-        <p class="bodytext">Create custom cards for the Shadowverse card game.</p>
-        <br />
-        <img src="img/ui/line.png" class="line">
-        <br /><br />
-        <div id="cardcontainer">
-          <img id="card" src="img/generator/follower/follower_legendary.png">
-        </div>
-        <div id="settings">
-          <p class="heading" style="font-size:30px;">Settings</p>
-          <br />
-          <form id="menu">
-            <label for="name" class="bodytext">Name: </label>
-            <input type="text" id="name" name="name"><br /><br />
-            <label for="class" class="bodytext">Class: </label>
-            <select name="class" id="cars">
-              <option value="volvo">Forest</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
-            </select>
-          </form>
-        </div>
-        <br /><br /><br />
-      </div>
-      <canvas id="myCanvas" width="1920" height="1120"></canvas>
-      <button onclick="generate()">Test</button>
-      <button onclick="download()">Test2</button>
-    </div>
+    <script type="text/javascript" src="js/fabric.min.js"></script>
+    <script type="text/javascript" src="js/download.min.js"></script>
+    <script type="text/javascript" src="js/card_art.js"></script>
+      <button onclick="generate()">Generate card</button>
+      <canvas id="cardTemplate" width="1920" height="1120" style="display: none;"></canvas>
   </body>
-  <script src="js/card_art.js"></script>
-  <script src="js/download.min.js"></script>
+
 </html>
