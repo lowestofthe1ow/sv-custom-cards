@@ -3,6 +3,11 @@
   src: url(font/seag.ttf);
 }
 
+@font-face {
+  font-family: "Stargate";
+  src: url(font/stargate.ttf);
+}
+
 body {
   font-family: "Seagull";
 }
