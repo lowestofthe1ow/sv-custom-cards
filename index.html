@@ -11,7 +11,19 @@
     <script type="text/javascript" src="js/fabric.min.js"></script>
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
-      <button onclick="generate()">Generate card</button>
+    <script type="text/javascript">
+      function formatText(areaText) {
+        var area = document.getElementById(areaText);
+        var text = area.value;
+        var selectedText = text.substring(area.selectionStart, area.selectionEnd);
+        var beforeText = text.substring(0, area.selectionStart);
+        var afterText = text.substring(area.selectionEnd, text.length);
+        if (selectedText.trim().length != 0) {
+          area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
+        }
+      }
+    </script>
+      <button onclick="generate()" id="generateButton" disabled=true>Generate card</button>
       <form>
         <label for="form_name">Name:</label>
         <input type="text" id="form_name"/>
@@ -32,20 +44,22 @@
         <input type="text" id="form_trait"/><br />
 
         <label for="form_att1">Unevolved attack:</label>
-        <input type="text" id="form_att1"/>
+        <input type="number" style="font-family:'Stargate'" id="form_att1"/>
         <label for="form_att1">Unevolved defense:</label>
-        <input type="text" id="form_def1"/><br />
+        <input type="number" style="font-family:'Stargate'" id="form_def1"/><br />
 
         <label for="form_text1">Text:</label>
-        <textarea id="form_text1" rows="12" cols="50"></textarea><br />
+        <textarea id="form_text1" rows="12" cols="50"></textarea>
+        <button type="button" onclick="formatText('form_text1')">Bold</button><br />
 
         <label for="form_att1">Evolved attack:</label>
-        <input type="text" id="form_att2"/>
+        <input type="number" style="font-family:'Stargate'" id="form_att2"/>
         <label for="form_att1">Evolved defense:</label>
-        <input type="text" id="form_def2"/><br />
+        <input type="number" style="font-family:'Stargate'" id="form_def2"/><br />
 
         <label for="form_text2">Text:</label>
-        <textarea id="form_text2" rows="12" cols="50"></textarea><br />
+        <textarea id="form_text2" rows="12" cols="50"></textarea>
+        <button type="button" onclick="formatText('form_text2')">Bold</button><br />
       </form>
       <canvas id="cardTemplate" width="1920" height="1120" style="display:none"></canvas>
   </body>

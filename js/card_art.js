@@ -14,6 +14,10 @@ window.onload = function() {
     loadedImages[i].src = images[i];
     document.getElementById("imageloader").appendChild(loadedImages[i]);
   }
+  Promise.all(loadedImages.filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
+      //console.log('images finished loading');
+      document.getElementById("generateButton").disabled = false;
+  });
 }
 
 function generate() {
