@@ -7,7 +7,12 @@ window.onload = function() {
     "img/generator/layout/textbox_follower/2.png",
     "img/generator/layout/textbox_follower/3.png",
     "img/generator/layout/border.png",
-    "img/ui/background_Track.png"
+    "img/ui/background_Track.png",
+    "img/generator/layout/textbox_amuletspell/0.png",
+    "img/generator/layout/textbox_amuletspell/1.png",
+    "img/generator/layout/textbox_amuletspell/2.png",
+    "img/generator/layout/textbox_amuletspell/3.png",
+    "img/generator/layout/textbox_amuletspell/4.png",
   ];
   for (var i = 0; i < images.length; i++) {
     loadedImages[i] = new Image;
@@ -17,7 +22,34 @@ window.onload = function() {
   Promise.all(loadedImages.filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
       //console.log('images finished loading');
       document.getElementById("generateButton").disabled = false;
+      document.getElementById("generateButton").innerHTML = "Generate card";
   });
+  toggleText2();
+}
+
+// Bold text shortcut button
+function formatText(areaText) {
+  var area = document.getElementById(areaText);
+  var text = area.value;
+  var selectedText = text.substring(area.selectionStart, area.selectionEnd);
+  var beforeText = text.substring(0, area.selectionStart);
+  var afterText = text.substring(area.selectionEnd, text.length);
+  if (selectedText.trim().length != 0) {
+    area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
+  };
+}
+
+// Change visible settings for follower, amulet, and spell
+function toggleText2() {
+  if (document.getElementById("form_type").value != 0) {
+    document.getElementById("div_text2").style.display = "none";
+    document.getElementById("div_stats").style.display = "none";
+    document.getElementById("label_form_text1").innerHTML = "Text:";
+  } else {
+    document.getElementById("div_text2").style.display = "block";
+    document.getElementById("div_stats").style.display = "block";
+    document.getElementById("label_form_text1").innerHTML = "Unevolved Text:";
+  }
 }
 
 function generate() {
@@ -31,23 +63,33 @@ function generate() {
   var def2 = document.getElementById("form_def2").value;
   var cardClass = document.getElementById("form_class").value;
   var trait = document.getElementById("form_trait").value;
+  var type = document.getElementById("form_type").value;
   var backgroundImage = new fabric.Image(loadedImages[5], {opacity: 0.4})
 
+  // "Trait: -" if string is blank
   if (trait.trim().length === 0) {
     trait = "-";
   };
 
-  // Number of text lines (Followers only)
-  var lines1 = getLines(text1) < 5 ? 5 : getLines(text1);
-  var lines2 = getLines(text2) < (10 - lines1) ? 10 - lines1 : getLines(text2);
-  if (lines2 > 5) {
-    if (getLines(text1) < 10 - lines2) {
-      lines1 = 10 - lines2;
-      console.log(lines1);
-    } else {
-      lines1 = getLines(text1);
-    }
-  };
+  // Number of text lines
+  if (type == 0) {
+    var lines1 = getLines(text1, 30) < 5 ? 5 : getLines(text1, 30);
+    var lines2 = getLines(text2, 30) < (10 - lines1) ? 10 - lines1 : getLines(text2, 30);
+    if (lines2 > 5) {
+      if (getLines(text1, 30) < 10 - lines2) {
+        lines1 = 10 - lines2;
+        console.log(lines1);
+      } else {
+        lines1 = getLines(text1, 30);
+      }
+    };
+  } else {
+    var lines1 = getLines(text1, 36) < 6 ? 6 : getLines(text1, 36);
+    var lines2 = 9 - lines1;
+    if (lines2 < 0) {
+      lines2 = 0;
+    };
+  }
 
   // Create canvas
   var canvas = new fabric.StaticCanvas("cardTemplate", {
@@ -56,21 +98,32 @@ function generate() {
   });
 
   // Set canvas height
-  canvas.setHeight(getHeight(lines1 + lines2));
+  canvas.setHeight(getHeight(lines1 + lines2, type));
 
   // Disable background image if canvas is expanded
   if (lines1+lines2 <= 12) {
     canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas))
+  } else {
+    canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
+      scaleX: canvas.height / backgroundImage.height,
+      scaleY: canvas.height / backgroundImage.height
+    });
   }
 
-  // Draw text box and card text (Followers only)
-  drawTextBox(0, lines1, lines2, canvas);
-  drawFollowerText(name, text1, text2, lines1, canvas, att1, att2, def1, def2);
-  drawInitial(name, canvas, cardClass, "-");
+  // Draw text box and card text
+  drawTextBox(type, lines1, lines2, canvas);
+  if (type == 0) {
+    drawFollowerText(name, text1, text2, lines1, canvas, att1, att2, def1, def2);
+  } else {
+    drawSpellAmuletText(name, text1, lines1, canvas)
+  }
+
+  drawInitial(name, canvas, cardClass, trait);
   // Download image
   download(canvas.toDataURL('image/png', 1.0), "card", "image/png");
 }
 
+// Draw elements common to all card types
 function drawInitial(name, canvas, cardClass, trait) {
   canvas.add(new fabric.Text(name, {top: 113, left: 133, fontFamily: "Seagull", fontSize: 60, fill: "#FFFDEE"}));
   canvas.add(new fabric.Text("Class:", {top: 75, left: 1406, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
@@ -80,29 +133,59 @@ function drawInitial(name, canvas, cardClass, trait) {
 }
 
 // Get canvas height to account for text lines
-function getHeight(sum) {
-  if (sum > 12) {
-    return 1120 + (40*(sum-12));
+function getHeight(sum, type) {
+  if (type == 0) {
+    if (sum > 12) {
+      return 1120 + (40*(sum-12));
+    } else {
+      return 1120;
+    }
   } else {
-    return 1120;
+    if (sum > 11) {
+      return 1120 + (51*(sum-11));
+    } else {
+      return 1120;
+    }
   }
 }
 
 // Get number of text lines
-function getLines(text) {
+function getLines(text, textSize) {
   var textbox = new fabric.Textbox(text, {
     width: 911,
     fontFamily: "Seagull",
-    fontSize: 30,
+    fontSize: textSize,
     fill: "#FFFDEE"
   });
   return textbox._textLines.length;
 }
 
-// Draw text on canvas
+// Draw follower text on canvas
 // Name - User-inputted name
-// Text1 - Amulet, Spell, or Unevolved Follower text
-// Text2 - Evolved Follower text, blank string if Spell or Amulet
+// Text - Amulet or Spell text
+// LinesSpacing - Number of Text1 line spaces for Text2 to account for
+// Canvas - Fabric.js canvas object
+function drawSpellAmuletText(name, text, linesSpacing, canvas) {
+  var parseResults = parseBB(text);
+  var fabricText = new fabric.Textbox(parseResults[0], {
+    top: 401,
+    left: 804,
+    width: 911,
+    fontFamily: "Seagull",
+    fontSize: 36,
+    lineHeight: (51/36)/1.13,
+    fill: "#FFFDEE",
+  });
+  for (var i = 0; i < parseResults[1].length; i++) {
+    fabricText.setSelectionStyles({fontWeight: 1000}, parseResults[1][i], parseResults[2][i]);
+  }
+  canvas.add(fabricText);
+}
+
+// Draw follower text on canvas
+// Name - User-inputted name
+// Text1 - Unevolved Follower text
+// Text2 - Evolved Follower text
 // LinesSpacing - Number of Text1 line spaces for Text2 to account for
 // Canvas - Fabric.js canvas object
 function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, def1, def2) {
@@ -114,7 +197,7 @@ function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, 
     width: 911,
     fontFamily: "Seagull",
     fontSize: 30,
-    lineHeight: 1.18,
+    lineHeight: (40/30)/1.13,
     fill: "#FFFDEE",
   });
   for (var i = 0; i < parseResults1[1].length; i++) {
@@ -126,7 +209,7 @@ function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, 
     width: 911,
     fontFamily: "Seagull",
     fontSize: 30,
-    lineHeight: 1.18,
+    lineHeight: (40/30)/1.13,
     fill: "#FFFDEE"
   });
   for (var i = 0; i < parseResults2[1].length; i++) {
@@ -138,7 +221,6 @@ function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, 
     left: 1535,
     fontFamily: "Stargate",
     fontSize: 60,
-    lineHeight: 1.18,
     fill: "#FFFDEE",
     charSpacing: -80
   }));
@@ -147,26 +229,23 @@ function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, 
     left: 1677,
     fontFamily: "Stargate",
     fontSize: 60,
-    lineHeight: 1.18,
     fill: "#FFFDEE",
     charSpacing: -80
   }));
   //evolved,atk,def
   canvas.add(new fabric.Text(att2, {
-    top: 598,
+    top: 398+(40*linesSpacing),
     left: 1535,
     fontFamily: "Stargate",
     fontSize: 60,
-    lineHeight: 1.18,
     fill: "#FFFDEE",
     charSpacing: -80
   }));
   canvas.add(new fabric.Text(def2, {
-    top: 598,
+    top: 398+(40*linesSpacing),
     left: 1677,
     fontFamily: "Stargate",
     fontSize: 60,
-    lineHeight: 1.18,
     fill: "#FFFDEE",
     charSpacing: -80
   }));
@@ -200,9 +279,10 @@ function parseBB(text) {
 // Canvas - Fabric.js canvas object
 function drawTextBox(type, lines1, lines2, canvas) {
   var lineDrawPositionY;
+  canvas.add(new fabric.Image(loadedImages[4], {top: 0, left: 0}));
+  // Follower text box
   if (type == 0) {
     canvas.add(new fabric.Image(loadedImages[0], {top: 240, left: 753}));
-    canvas.add(new fabric.Image(loadedImages[4], {top: 0, left: 0}));
     for (var i = 0; i < lines1-1; i++) {
       canvas.add(new fabric.Image(loadedImages[1], {top: 394+(40*i), left: 753}));
     };
@@ -214,6 +294,26 @@ function drawTextBox(type, lines1, lines2, canvas) {
       lineDrawPositionY += 40;
     };
     canvas.add(new fabric.Image(loadedImages[3], {top: lineDrawPositionY, left: 753}));
-  };
+  }
+  // Spell or Amulet text box
+  else {
+    if (type == 1) {
+      // Amulet
+      canvas.add(new fabric.Image(loadedImages[6], {top: 240, left: 753}));
+    }
+    else {
+      // Spell
+      canvas.add(new fabric.Image(loadedImages[7], {top: 240, left: 753}));
+    }
+    for (var i = 0; i < lines1 - 1; i++) {
+      canvas.add(new fabric.Image(loadedImages[8], {top: 446+(51*i), left: 753}));
+    };
+    lineDrawPositionY = 446+(51*i);
+    for (var i = 0; i < lines2; i++) {
+      canvas.add(new fabric.Image(loadedImages[9], {top: lineDrawPositionY, left: 753}));
+      lineDrawPositionY += 51;
+    };
+    canvas.add(new fabric.Image(loadedImages[10], {top: lineDrawPositionY, left: 753}));
+  }
   canvas.requestRenderAll;
 }
