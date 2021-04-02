@@ -8,6 +8,11 @@
   src: url(font/stargate.ttf);
 }
 
+@font-face {
+  font-family: "EBGaramond";
+  src: url(font/EBGaramond-VariableFont_wght.ttf);
+}
+
 body {
   font-family: "Seagull";
 }

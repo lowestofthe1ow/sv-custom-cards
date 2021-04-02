@@ -12,12 +12,15 @@
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
     <h1>Shadowverse Custom Card Generator</h1>
-    <p>May not work on all browsers, probably works in Chrome/Firefox</p>
+    <p style="font-family:'EBGaramond'">May not work on all browsers, probably works in Chrome/Firefox</p>
     <br />
-    <button onclick="generate()" id="generateButton" disabled=true>Loading generator...</button>
+    <button onclick="generate()" id="generateButton" disabled="true">Loading generator...</button>
     <form>
       <label for="form_name">Name:</label>
       <input type="text" id="form_name"/>
+      <br />
+      <label for="form_art">Image:</label>
+      <input type="file" accept="image/png, image/jpeg" onchange="loadImage()" id="form_art"/>
       <br />
       <label for="form_class">Class:</label>
       <select id="form_class">
@@ -68,9 +71,7 @@
         <br />
         <textarea id="form_text2" rows="12" cols="50"></textarea>
       </div>
-
     </form>
-
-    <canvas id="cardTemplate" width="1920" height="1120" style="display: none"></canvas>
+    <canvas id="cardTemplate" width="1920" height="1120" style="display:none"></canvas>
   </body>
 </html>

@@ -13,6 +13,9 @@ window.onload = function() {
     "img/generator/layout/textbox_amuletspell/2.png",
     "img/generator/layout/textbox_amuletspell/3.png",
     "img/generator/layout/textbox_amuletspell/4.png",
+    "img/generator/follower/follower_legendary.png",
+    "img/generator/amulet/amulet_legendary.png",
+    "img/generator/spell/spell_legendary.png"
   ];
   for (var i = 0; i < images.length; i++) {
     loadedImages[i] = new Image;
@@ -24,6 +27,7 @@ window.onload = function() {
       document.getElementById("generateButton").disabled = false;
       document.getElementById("generateButton").innerHTML = "Generate card";
   });
+  document.getElementById("form_art").value = null;
   toggleText2();
 }
 
@@ -64,6 +68,7 @@ function generate() {
   var cardClass = document.getElementById("form_class").value;
   var trait = document.getElementById("form_trait").value;
   var type = document.getElementById("form_type").value;
+  var art = document.getElementById("form_art");
   var backgroundImage = new fabric.Image(loadedImages[5], {opacity: 0.4})
 
   // "Trait: -" if string is blank
@@ -113,6 +118,8 @@ function generate() {
   // Draw elements common to all card types
   drawInitial(name, canvas, cardClass, trait);
 
+  drawArt(canvas, type, name, "1", att1, def1, art);
+
   // Draw text box and card text
   drawTextBox(type, lines1, lines2, canvas);
   if (type == 0) {
@@ -121,10 +128,101 @@ function generate() {
     drawSpellAmuletText(name, text1, lines1, canvas)
   }
 
+  art.value = null;
   canvas.renderAll();
 
   // Download image
   download(canvas.toDataURL('image/png', 1.0), "card", "image/png");
+}
+
+function loadImage() {
+  document.getElementById("generateButton").disabled = true;
+  document.getElementById("generateButton").innerHTML = "Loading image...";
+  var art = document.getElementById("form_art");
+  var artImage = new Image();
+  artImage.src = URL.createObjectURL(art.files[art.files.length - 1]);
+  artImage.onload = function() {
+    loadedImages[14] = artImage
+    document.getElementById("generateButton").disabled = false;
+    document.getElementById("generateButton").innerHTML = "Generate card";
+  }
+}
+
+function drawArt(canvas, type, name, cost, att, def, art) {
+  var frame = loadedImages[11+Number(type)];
+  canvas.add(new fabric.Image(frame, {top: 221, left: 136, scaleX: 576/536, scaleY: 750/698}));
+  var object = new fabric.Image(loadedImages[14], {top: 342, left: 203})
+  object.scaleX = 440 / object.width;
+  object.scaleY = 560 / object.height;
+  canvas.add(object);
+  canvas.sendToBack(object);
+  var widthValue = 310;
+  var labelName = new fabric.Text((name), {
+    left: 290,
+    fontFamily: "Seagull",
+    fontSize: 42,
+    textAlign: "center",
+    //lineHeight: (40/30)/1.13,
+    fill: "#FFFFFF"
+  });
+  var labelCost = new fabric.Textbox((cost), {
+    left: 136,
+    top: 254,
+    width: 129,
+    fontFamily: "EBGaramond",
+    fontSize: 112,
+    textAlign: "center",
+    fill: "#FFFFFF",
+    fontWeight: 500,
+    shadow: {
+      color: "rgba(0, 0, 0, 0.7)",
+      blur: 10,
+    },
+    charSpacing: -80
+  });
+  if (type == 0) {
+    var labelAtt = new fabric.Textbox((att), {
+      left: 141,
+      top: 830,
+      width: 129,
+      fontFamily: "EBGaramond",
+      fontSize: 112,
+      textAlign: "center",
+      fill: "#FFFFFF",
+      fontWeight: 500,
+      shadow: {
+        color: "rgba(0, 0, 0, 0.7)",
+        blur: 10,
+      },
+      charSpacing: -80
+    });
+    var labelDef = new fabric.Textbox((def), {
+      left: 575,
+      top: 830,
+      width: 129,
+      fontFamily: "EBGaramond",
+      fontSize: 112,
+      textAlign: "center",
+      fill: "#FFFFFF",
+      fontWeight: 500,
+      shadow: {
+        color: "rgba(0, 0, 0, 0.7)",
+        blur: 10,
+      },
+      charSpacing: -80
+    });
+    canvas.add(labelAtt);
+    canvas.add(labelDef);
+  }
+  canvas.add(labelCost);
+  canvas.add(labelName);
+  if (labelName.measureLine(0).width > widthValue - 20) {
+    labelName.fontSize *= widthValue / (labelName.measureLine(0).width);
+  } else {
+    labelName.left = 280;
+  };
+  labelName.top = 302 + ((42-labelName.fontSize)/2.5);
+  labelName.width = widthValue;
 }
 
 // Draw elements common to all card types
