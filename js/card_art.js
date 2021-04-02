@@ -110,6 +110,9 @@ function generate() {
     });
   }
 
+  // Draw elements common to all card types
+  drawInitial(name, canvas, cardClass, trait);
+
   // Draw text box and card text
   drawTextBox(type, lines1, lines2, canvas);
   if (type == 0) {
@@ -118,7 +121,8 @@ function generate() {
     drawSpellAmuletText(name, text1, lines1, canvas)
   }
 
-  drawInitial(name, canvas, cardClass, trait);
+  canvas.renderAll();
+
   // Download image
   download(canvas.toDataURL('image/png', 1.0), "card", "image/png");
 }
@@ -160,7 +164,7 @@ function getLines(text, textSize) {
   return textbox._textLines.length;
 }
 
-// Draw follower text on canvas
+// Draw spell or amulet text on canvas
 // Name - User-inputted name
 // Text - Amulet or Spell text
 // LinesSpacing - Number of Text1 line spaces for Text2 to account for
@@ -315,5 +319,4 @@ function drawTextBox(type, lines1, lines2, canvas) {
     };
     canvas.add(new fabric.Image(loadedImages[10], {top: lineDrawPositionY, left: 753}));
   }
-  canvas.requestRenderAll;
 }
