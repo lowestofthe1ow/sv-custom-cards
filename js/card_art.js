@@ -254,7 +254,7 @@ function getHeight(sum, type) {
 
 // Get number of text lines
 function getLines(text, textSize) {
-  var textbox = new fabric.Textbox(text, {
+  var textbox = new fabric.Textbox(parseBB(text)[0], {
     width: 911,
     fontFamily: "Seagull",
     fontSize: textSize,
