@@ -68,6 +68,7 @@ function generate() {
   var cardClass = document.getElementById("form_class").value;
   var trait = document.getElementById("form_trait").value;
   var type = document.getElementById("form_type").value;
+  var cost = document.getElementById("form_cost").value;
   var art = document.getElementById("form_art");
   var backgroundImage = new fabric.Image(loadedImages[5], {opacity: 0.4})
 
@@ -118,7 +119,7 @@ function generate() {
   // Draw elements common to all card types
   drawInitial(name, canvas, cardClass, trait);
 
-  drawArt(canvas, type, name, "1", att1, def1, art);
+  drawArt(canvas, type, name, cost, att1, def1, art);
 
   // Draw text box and card text
   drawTextBox(type, lines1, lines2, canvas);
