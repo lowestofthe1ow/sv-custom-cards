@@ -34,7 +34,8 @@ window.onload = function() {
     "img/generator/amulet/amulet_bronze.png",
     "img/generator/spell/spell_bronze.png",
     // Backgrounds (23-31)
-    "img/generator/layout/backgrounds/background_Morning_Star.png",
+    "img/generator/layout/backgrounds/background_Morning_Star.png"
+    /*
     "img/generator/layout/backgrounds/background_Forest.png",
     "img/generator/layout/backgrounds/background_Castle.png",
     "img/generator/layout/backgrounds/background_Laboratory.png",
@@ -43,6 +44,7 @@ window.onload = function() {
     "img/generator/layout/backgrounds/background_Darkstone.png",
     "img/generator/layout/backgrounds/background_Hall.png",
     "img/generator/layout/backgrounds/bg_tree_2_1.png"
+    */
   ];
   preloadImages(images, loadedImages, function() {
     document.getElementById("loadGif").style.display = "none";
@@ -118,7 +120,7 @@ function generate() {
   var art = document.getElementById("form_art");
   var rarity = document.getElementById("form_rarity").value;
   var useBlackBackground = document.getElementById("form_background").checked;
-  var backgroundImage = new fabric.Image(loadedImages[23 + Number(cardClass)], {
+  var backgroundImage = new fabric.Image(loadedImages[23], {
     opacity: 0.4,
   })
   // "Trait: -" if string is blank
