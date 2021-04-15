@@ -123,6 +123,13 @@ function generate() {
   var backgroundImage = new fabric.Image(loadedImages[23], {
     opacity: 0.4,
   })
+  var scaleFactor;
+  var fileName = name.replace(/\s+/g, '');
+
+  if (fileName.length === 0) {
+    fileName = "card";
+  };
+
   // "Trait: -" if string is blank
   if (trait.trim().length === 0) {
     trait = "-";
@@ -151,6 +158,7 @@ function generate() {
   canvas.setHeight(getHeight(lines1 + lines2, type));
 
   // Set background image
+  scaleFactor = canvas.height < backgroundImage.height ? canvas.width / backgroundImage.width : canvas.height / backgroundImage.height;
   if (lines1+lines2 <= 12 && useBlackBackground == false) {
     canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
       originX: "center",
@@ -160,8 +168,8 @@ function generate() {
     })
   } else if (useBlackBackground == false) {
     canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
-      scaleX: canvas.height / backgroundImage.height,
-      scaleY: canvas.height / backgroundImage.height,
+      scaleX: scaleFactor,
+      scaleY: scaleFactor,
       originX: "center",
       originY: "center",
       top: canvas.height / 2,
@@ -186,7 +194,7 @@ function generate() {
   canvas.renderAll();
 
   // Download image
-  download(canvas.toDataURL('image/png', 1.0), "card", "image/png");
+  download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
 }
 
 function loadImage() {
