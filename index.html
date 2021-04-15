@@ -11,70 +11,86 @@
     <script type="text/javascript" src="js/fabric.min.js"></script>
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
-    <h1>Shadowverse Custom Card Generator</h1>
-    <p style="font-family:'EBGaramond'">May not work on all browsers, probably works in Chrome/Firefox</p>
-    <br />
-    <button onclick="generate()" id="generateButton" disabled="true">Loading generator...</button>
-    <form>
-      <label for="form_name">Name:</label>
-      <input type="text" id="form_name"/>
+    <div id="loader">
+      <img src="img/ui/ajax-loader.gif"/>
+    </div>
+    <div id="main" style="display:none">
+      <h1>Shadowverse Custom Card Generator</h1>
+      <p style="font-family:'EBGaramond'">May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
       <br />
-      <label for="form_art">Image:</label>
-      <input type="file" accept="image/png, image/jpeg" onchange="loadImage()" id="form_art"/>
-      <br />
-      <label for="form_class">Class:</label>
-      <select id="form_class">
-        <option value="Neutral">Neutral</option>
-        <option value="Forestcraft">Forestcraft</option>
-        <option value="Swordcraft">Swordcraft</option>
-        <option value="Runecraft">Runecraft</option>
-        <option value="Dragoncraft">Dragoncraft</option>
-        <option value="Shadowcraft">Shadowcraft</option>
-        <option value="Bloodcraft">Bloodcraft</option>
-        <option value="Havencraft">Havencraft</option>
-        <option value="Portalcraft">Portalcraft</option>
-      </select>
-      <br />
-      <label for="form_type">Type:</label>
-      <select id="form_type" onchange="toggleText2()" value=0>
-        <option value=0>Follower</option>
-        <option value=1>Amulet</option>
-        <option value=2>Spell</option>
-      </select>
-      <br />
-      <label for="form_trait">Trait:</label>
-      <input type="text" id="form_trait"/>
-      <br />
-      <label for="form_cost">Cost:</label>
-      <input type="number" style="font-family:'Stargate'" id="form_cost" />
-      <br />
-      <div id="div_stats">
+      <button onclick="generate()" id="generateButton" disabled="true">Generate card</button>
+      <form>
+        <label for="form_name">Name:</label>
+        <input type="text" id="form_name"/>
         <br />
-        <label for="form_att1">Unevolved attack:</label>
-        <input type="number" style="font-family:'Stargate'" id="form_att1"/>
+        <label for="form_art">Image:</label>
+        <input type="file" accept="image/png, image/jpeg" onchange="loadImage()" id="form_art"/>
         <br />
-        <label for="form_att1">Unevolved defense:</label>
-        <input type="number" style="font-family:'Stargate'" id="form_def1"/>
-        <br /><br />
-        <label for="form_att1">Evolved attack:</label>
-        <input type="number" style="font-family:'Stargate'" id="form_att2"/>
+        <label for="form_class">Class:</label>
+        <select id="form_class">
+          <option value=0>Neutral</option>
+          <option value=1>Forestcraft</option>
+          <option value=2>Swordcraft</option>
+          <option value=3>Runecraft</option>
+          <option value=4>Dragoncraft</option>
+          <option value=5>Shadowcraft</option>
+          <option value=6>Bloodcraft</option>
+          <option value=7>Havencraft</option>
+          <option value=8>Portalcraft</option>
+        </select>
         <br />
-        <label for="form_att1">Evolved defense:</label>
-        <input type="number" style="font-family:'Stargate'" id="form_def2"/>
-      </div>
-      <br />
-      <label for="form_text1" id="label_form_text1">Unevolved Text:</label>
-      <button type="button" onclick="formatText('form_text1')">Bold</button>
-      <br />
-      <textarea id="form_text1" rows="12" cols="50"></textarea>
-      <br />
-      <div id="div_text2">
-        <label for="form_text2" id="label_form_text2">Evolved Text:</label>
-        <button type="button" onclick="formatText('form_text2')">Bold</button>
+        <label for="form_type">Type:</label>
+        <select id="form_type" onchange="toggleText2()" value=0>
+          <option value=0>Follower</option>
+          <option value=1>Amulet</option>
+          <option value=2>Spell</option>
+        </select>
         <br />
-        <textarea id="form_text2" rows="12" cols="50"></textarea>
-      </div>
-    </form>
-    <canvas id="cardTemplate" width="1920" height="1120" style="display:none"></canvas>
+        <label for="form_rarity">Rarity:</label>
+        <select id="form_rarity" value=0>
+          <option value=0>Legendary</option>
+          <option value=1>Gold</option>
+          <option value=2>Silver</option>
+          <option value=3>Bronze</option>
+        </select>
+        <br />
+        <label for="form_trait">Trait:</label>
+        <input type="text" id="form_trait"/>
+        <br />
+        <label for="form_cost">Cost:</label>
+        <input type="number" style="font-family:'Stargate'" id="form_cost" />
+        <br />
+        <input type="checkbox" id="form_background" value="use"/>
+        <label for="form_background">Use black background? </label>
+        <br />
+        <div id="div_stats">
+          <br />
+          <label for="form_att1">Unevolved attack:</label>
+          <input type="number" style="font-family:'Stargate'" id="form_att1"/>
+          <br />
+          <label for="form_att1">Unevolved defense:</label>
+          <input type="number" style="font-family:'Stargate'" id="form_def1"/>
+          <br /><br />
+          <label for="form_att1">Evolved attack:</label>
+          <input type="number" style="font-family:'Stargate'" id="form_att2"/>
+          <br />
+          <label for="form_att1">Evolved defense:</label>
+          <input type="number" style="font-family:'Stargate'" id="form_def2"/>
+        </div>
+        <br />
+        <label for="form_text1" id="label_form_text1">Unevolved Text:</label>
+        <button type="button" onclick="formatText('form_text1')">Bold</button>
+        <br />
+        <textarea id="form_text1" rows="12" cols="50"></textarea>
+        <br />
+        <div id="div_text2">
+          <label for="form_text2" id="label_form_text2">Evolved Text:</label>
+          <button type="button" onclick="formatText('form_text2')">Bold</button>
+          <br />
+          <textarea id="form_text2" rows="12" cols="50"></textarea>
+        </div>
+      </form>
+      <canvas id="cardTemplate" width="1920" height="1120" style="display:none"></canvas>
+    </div>
   </body>
 </html>

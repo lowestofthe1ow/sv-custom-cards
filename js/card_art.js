@@ -2,20 +2,47 @@ window.onload = function() {
   // Load images
   window.loadedImages = [];
   const images = [
+    // Follower text box (0-3)
     "img/generator/layout/textbox_follower/0.png",
     "img/generator/layout/textbox_follower/1.png",
     "img/generator/layout/textbox_follower/2.png",
     "img/generator/layout/textbox_follower/3.png",
+    // Border (4)
     "img/generator/layout/border.png",
-    "img/ui/background_Track.png",
+    // Card art (5)
+    "",
+    // Amulet/spell text box (6-10)
     "img/generator/layout/textbox_amuletspell/0.png",
     "img/generator/layout/textbox_amuletspell/1.png",
     "img/generator/layout/textbox_amuletspell/2.png",
     "img/generator/layout/textbox_amuletspell/3.png",
     "img/generator/layout/textbox_amuletspell/4.png",
+    // Legendary frame (11-13)
     "img/generator/follower/follower_legendary.png",
     "img/generator/amulet/amulet_legendary.png",
-    "img/generator/spell/spell_legendary.png"
+    "img/generator/spell/spell_legendary.png",
+    // Gold frame (14-16)
+    "img/generator/follower/follower_gold.png",
+    "img/generator/amulet/amulet_gold.png",
+    "img/generator/spell/spell_gold.png",
+    // Silver frame (17-19)
+    "img/generator/follower/follower_silver.png",
+    "img/generator/amulet/amulet_silver.png",
+    "img/generator/spell/spell_silver.png",
+    // Bronze frame (20-22)
+    "img/generator/follower/follower_bronze.png",
+    "img/generator/amulet/amulet_bronze.png",
+    "img/generator/spell/spell_bronze.png",
+    // Backgrounds (23-31)
+    "img/generator/layout/backgrounds/background_Morning_Star.png",
+    "img/generator/layout/backgrounds/background_Forest.png",
+    "img/generator/layout/backgrounds/background_Castle.png",
+    "img/generator/layout/backgrounds/background_Laboratory.png",
+    "img/generator/layout/backgrounds/background_Mountains.png",
+    "img/generator/layout/backgrounds/background_Mansion.png",
+    "img/generator/layout/backgrounds/background_Darkstone.png",
+    "img/generator/layout/backgrounds/background_Hall.png",
+    "img/generator/layout/backgrounds/bg_tree_2_1.png"
   ];
   for (var i = 0; i < images.length; i++) {
     loadedImages[i] = new Image;
@@ -23,9 +50,9 @@ window.onload = function() {
     document.getElementById("imageloader").appendChild(loadedImages[i]);
   }
   Promise.all(loadedImages.filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
-      //console.log('images finished loading');
-      document.getElementById("generateButton").disabled = false;
-      document.getElementById("generateButton").innerHTML = "Generate card";
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("main").style.display = "block";
+    document.getElementById("generateButton").disabled = false;
   });
   document.getElementById("form_art").value = null;
   toggleText2();
@@ -57,21 +84,33 @@ function toggleText2() {
 }
 
 function generate() {
+  // Create canvas
+  var canvas = new fabric.StaticCanvas("cardTemplate", {
+    width: 1920,
+    backgroundColor: "#000000"
+  });
+
   // Input fields
+  const cardClasses = ["Neutral", "Forestcraft", "Swordcraft", "Runecraft", "Dragoncraft", "Shadowcraft", "Bloodcraft", "Havencraft", "Portalcraft"]
   var name = document.getElementById("form_name").value;
   var text1 = document.getElementById("form_text1").value;
   var text2 = document.getElementById("form_text2").value;
-  var att1 = document.getElementById("form_att1").value;
-  var att2 = document.getElementById("form_att2").value;
-  var def1 = document.getElementById("form_def1").value;
-  var def2 = document.getElementById("form_def2").value;
+  var stats = [
+    document.getElementById("form_att1").value,
+    document.getElementById("form_att2").value,
+    document.getElementById("form_def1").value,
+    document.getElementById("form_def2").value
+  ]
   var cardClass = document.getElementById("form_class").value;
   var trait = document.getElementById("form_trait").value;
   var type = document.getElementById("form_type").value;
   var cost = document.getElementById("form_cost").value;
   var art = document.getElementById("form_art");
-  var backgroundImage = new fabric.Image(loadedImages[5], {opacity: 0.4})
-
+  var rarity = document.getElementById("form_rarity").value;
+  var useBlackBackground = document.getElementById("form_background").checked;
+  var backgroundImage = new fabric.Image(loadedImages[23 + Number(cardClass)], {
+    opacity: 0.4,
+  })
   // "Trait: -" if string is blank
   if (trait.trim().length === 0) {
     trait = "-";
@@ -84,7 +123,6 @@ function generate() {
     if (lines2 > 5) {
       if (getLines(text1, 30) < 10 - lines2) {
         lines1 = 10 - lines2;
-        console.log(lines1);
       } else {
         lines1 = getLines(text1, 30);
       }
@@ -97,34 +135,37 @@ function generate() {
     };
   }
 
-  // Create canvas
-  var canvas = new fabric.StaticCanvas("cardTemplate", {
-    width: 1920,
-    backgroundColor: "#000000"
-  });
-
   // Set canvas height
   canvas.setHeight(getHeight(lines1 + lines2, type));
 
-  // Disable background image if canvas is expanded
-  if (lines1+lines2 <= 12) {
-    canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas))
-  } else {
+  // Set background image
+  if (lines1+lines2 <= 12 && useBlackBackground == false) {
+    canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
+      originX: "center",
+      originY: "center",
+      top: canvas.height / 2,
+      left: canvas.width / 2
+    })
+  } else if (useBlackBackground == false) {
     canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
       scaleX: canvas.height / backgroundImage.height,
-      scaleY: canvas.height / backgroundImage.height
+      scaleY: canvas.height / backgroundImage.height,
+      originX: "center",
+      originY: "center",
+      top: canvas.height / 2,
+      left: canvas.width / 2
     });
   }
 
   // Draw elements common to all card types
-  drawInitial(name, canvas, cardClass, trait);
+  drawInitial(name, canvas, cardClasses[Number(cardClass)], trait);
 
-  drawArt(canvas, type, name, cost, att1, def1, art);
+  drawArt(canvas, type, name, cost, stats, art, rarity);
 
   // Draw text box and card text
   drawTextBox(type, lines1, lines2, canvas);
   if (type == 0) {
-    drawFollowerText(name, text1, text2, lines1, canvas, att1, att2, def1, def2);
+    drawFollowerText(name, text1, text2, lines1, canvas, stats);
   } else {
     drawSpellAmuletText(name, text1, lines1, canvas)
   }
@@ -143,16 +184,16 @@ function loadImage() {
   var artImage = new Image();
   artImage.src = URL.createObjectURL(art.files[art.files.length - 1]);
   artImage.onload = function() {
-    loadedImages[14] = artImage
+    loadedImages[5] = artImage
     document.getElementById("generateButton").disabled = false;
     document.getElementById("generateButton").innerHTML = "Generate card";
   }
 }
 
-function drawArt(canvas, type, name, cost, att, def, art) {
-  var frame = loadedImages[11+Number(type)];
+function drawArt(canvas, type, name, cost, stats, art, rarity) {
+  var frame = loadedImages[11+Number(type)+(Number(rarity)*3)];
   canvas.add(new fabric.Image(frame, {top: 221, left: 136, scaleX: 576/536, scaleY: 750/698}));
-  var object = new fabric.Image(loadedImages[14], {top: 342, left: 203})
+  var object = new fabric.Image(loadedImages[5], {top: 342, left: 203})
   object.scaleX = 440 / object.width;
   object.scaleY = 560 / object.height;
   canvas.add(object);
@@ -182,7 +223,7 @@ function drawArt(canvas, type, name, cost, att, def, art) {
     charSpacing: -80
   });
   if (type == 0) {
-    var labelAtt = new fabric.Textbox((att), {
+    var labelAtt = new fabric.Textbox((stats[0]), {
       left: 141,
       top: 830,
       width: 129,
@@ -197,7 +238,7 @@ function drawArt(canvas, type, name, cost, att, def, art) {
       },
       charSpacing: -80
     });
-    var labelDef = new fabric.Textbox((def), {
+    var labelDef = new fabric.Textbox((stats[2]), {
       left: 575,
       top: 830,
       width: 129,
@@ -291,7 +332,7 @@ function drawSpellAmuletText(name, text, linesSpacing, canvas) {
 // Text2 - Evolved Follower text
 // LinesSpacing - Number of Text1 line spaces for Text2 to account for
 // Canvas - Fabric.js canvas object
-function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, def1, def2) {
+function drawFollowerText(name, text1, text2, linesSpacing, canvas, stats) {
   var parseResults1 = parseBB(text1);
   var parseResults2 = parseBB(text2);
   var fabricText1 = new fabric.Textbox(parseResults1[0], {
@@ -319,7 +360,7 @@ function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, 
     fabricText2.setSelectionStyles({fontWeight: 1000}, parseResults2[1][i], parseResults2[2][i]);
   }
   //unevolved,atk,def
-  canvas.add(new fabric.Text(att1, {
+  canvas.add(new fabric.Text(stats[0], {
     top: 284,
     left: 1535,
     fontFamily: "Stargate",
@@ -327,7 +368,7 @@ function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, 
     fill: "#FFFDEE",
     charSpacing: -80
   }));
-  canvas.add(new fabric.Text(def1, {
+  canvas.add(new fabric.Text(stats[2], {
     top: 284,
     left: 1677,
     fontFamily: "Stargate",
@@ -336,7 +377,7 @@ function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, 
     charSpacing: -80
   }));
   //evolved,atk,def
-  canvas.add(new fabric.Text(att2, {
+  canvas.add(new fabric.Text(stats[1], {
     top: 398+(40*linesSpacing),
     left: 1535,
     fontFamily: "Stargate",
@@ -344,7 +385,7 @@ function drawFollowerText(name, text1, text2, linesSpacing, canvas, att1, att2, 
     fill: "#FFFDEE",
     charSpacing: -80
   }));
-  canvas.add(new fabric.Text(def2, {
+  canvas.add(new fabric.Text(stats[3], {
     top: 398+(40*linesSpacing),
     left: 1677,
     fontFamily: "Stargate",
