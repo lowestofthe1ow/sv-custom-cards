@@ -44,19 +44,28 @@ window.onload = function() {
     "img/generator/layout/backgrounds/background_Hall.png",
     "img/generator/layout/backgrounds/bg_tree_2_1.png"
   ];
-  for (var i = 0; i < images.length; i++) {
-    loadedImages[i] = new Image;
-    loadedImages[i].src = images[i];
-    document.getElementById("imageloader").appendChild(loadedImages[i]);
-    console.log(loadedImages[i]);
-  }
-  Promise.all(loadedImages.filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
+  preloadImages(images, loadedImages, function() {
     document.getElementById("loadGif").style.display = "none";
     document.getElementById("generateButton").disabled = false;
     document.getElementById("generateButton").innerHTML = "Generate card"
   });
   document.getElementById("form_art").value = null;
   toggleText2();
+}
+
+function preloadImages(srcArray, imgArray, callback) {
+  var remaining = srcArray.length - 1;
+  for (var i = 0; i < srcArray.length; i++) {
+    var img = new Image();
+    img.onload = function() {
+      remaining -= 1;
+      if (remaining <= 0) {
+        callback();
+      }
+    };
+    img.src = srcArray[i];
+    imgArray.push(img);
+  }
 }
 
 // Bold text shortcut button
