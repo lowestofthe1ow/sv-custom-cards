@@ -48,6 +48,7 @@ window.onload = function() {
     loadedImages[i] = new Image;
     loadedImages[i].src = images[i];
     document.getElementById("imageloader").appendChild(loadedImages[i]);
+    console.log(loadedImages[i]);
   }
   Promise.all(loadedImages.filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
     document.getElementById("loadGif").style.display = "none";
