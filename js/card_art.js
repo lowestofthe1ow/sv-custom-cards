@@ -50,9 +50,9 @@ window.onload = function() {
     document.getElementById("imageloader").appendChild(loadedImages[i]);
   }
   Promise.all(loadedImages.filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))).then(() => {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("main").style.display = "block";
+    document.getElementById("loadGif").style.display = "none";
     document.getElementById("generateButton").disabled = false;
+    document.getElementById("generateButton").innerHTML = "Generate card"
   });
   document.getElementById("form_art").value = null;
   toggleText2();
