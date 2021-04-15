@@ -119,20 +119,26 @@ function generate() {
   var cost = document.getElementById("form_cost").value;
   var art = document.getElementById("form_art");
   var rarity = document.getElementById("form_rarity").value;
+  var illus = document.getElementById("form_illus").value;
   var useBlackBackground = document.getElementById("form_background").checked;
+  var isToken = document.getElementById("form_token").checked;
   var backgroundImage = new fabric.Image(loadedImages[23], {
     opacity: 0.4,
   })
   var scaleFactor;
   var fileName = name.replace(/\s+/g, '');
 
+  // Default filename
   if (fileName.length === 0) {
     fileName = "card";
   };
 
-  // "Trait: -" if string is blank
+  // "Trait: -" and "Illustrator: -" if string is blank
   if (trait.trim().length === 0) {
     trait = "-";
+  };
+  if (illus.trim().length === 0) {
+    illus = "-";
   };
 
   // Number of text lines
@@ -178,7 +184,7 @@ function generate() {
   }
 
   // Draw elements common to all card types
-  drawInitial(name, canvas, cardClasses[Number(cardClass)], trait);
+  drawInitial(name, canvas, cardClasses[Number(cardClass)], trait, illus, isToken);
 
   drawArt(canvas, type, name, cost, stats, art, rarity);
 
@@ -231,13 +237,16 @@ function drawArt(canvas, type, name, cost, stats, art, rarity) {
     left: 136,
     top: 254,
     width: 129,
-    fontFamily: "EBGaramond",
+    fontFamily: "AGaramondPro",
     fontSize: 112,
     textAlign: "center",
     fill: "#FFFFFF",
-    fontWeight: 500,
+    stroke: "rgba(153, 255, 102, 0.2)",
+    paintFirst: "stroke",
+    strokeWidth: 7,
+    fontWeight: 600,
     shadow: {
-      color: "rgba(0, 0, 0, 0.7)",
+      color: "rgba(0, 0, 0, 1)",
       blur: 10,
     },
     charSpacing: -80
@@ -247,14 +256,14 @@ function drawArt(canvas, type, name, cost, stats, art, rarity) {
       left: 141,
       top: 830,
       width: 129,
-      fontFamily: "EBGaramond",
-      fontSize: 112,
+      fontFamily: "AGaramondPro",
+      fontSize: 102,
       textAlign: "center",
       fill: "#FFFFFF",
-      fontWeight: 500,
+      fontWeight: "bold",
       shadow: {
-        color: "rgba(0, 0, 0, 0.7)",
-        blur: 10,
+        color: "rgba(0, 0, 50, 1)",
+        offsetY: 4
       },
       charSpacing: -80
     });
@@ -262,14 +271,14 @@ function drawArt(canvas, type, name, cost, stats, art, rarity) {
       left: 575,
       top: 830,
       width: 129,
-      fontFamily: "EBGaramond",
-      fontSize: 112,
+      fontFamily: "AGaramondPro",
+      fontSize: 102,
       textAlign: "center",
       fill: "#FFFFFF",
-      fontWeight: 500,
+      fontWeight: "bold",
       shadow: {
-        color: "rgba(0, 0, 0, 0.7)",
-        blur: 10,
+        color: "rgba(50, 0, 0, 1)",
+        offsetY: 4
       },
       charSpacing: -80
     });
@@ -288,12 +297,17 @@ function drawArt(canvas, type, name, cost, stats, art, rarity) {
 }
 
 // Draw elements common to all card types
-function drawInitial(name, canvas, cardClass, trait) {
+function drawInitial(name, canvas, cardClass, trait, illus, token) {
   canvas.add(new fabric.Text(name, {top: 113, left: 133, fontFamily: "Seagull", fontSize: 60, fill: "#FFFDEE"}));
   canvas.add(new fabric.Text("Class:", {top: 75, left: 1406, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
   canvas.add(new fabric.Text("Trait:", {top: 128, left: 1419, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
   canvas.add(new fabric.Text(cardClass, {top: 75, left: 1553, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
   canvas.add(new fabric.Text(trait, {top: 128, left: 1553, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
+  canvas.add(new fabric.Text("Illustrator:", {top: 987, left: 100, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
+  canvas.add(new fabric.Text(illus, {top: 987, left: 281, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
+  if (token == true) {
+    canvas.add(new fabric.Text("*This is a token card.", {top: 1020, left: 100, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
+  }
 }
 
 // Get canvas height to account for text lines

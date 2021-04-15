@@ -4,7 +4,7 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <title>Lol</title>
+    <title>Shadowverse Custom Card Generator</title>
   </head>
   <body>
     <div style="display:none" id="imageloader"></div>
@@ -12,7 +12,7 @@
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
     <h1>Shadowverse Custom Card Generator</h1>
-    <p style="font-family:'EBGaramond'">May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
+    <p style="font-family:'AGaramondPro'">May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
     <br />
     <div id="loadGif"><img src="img/ui/ajax-loader.gif"/><br /></div>
     <button onclick="generate()" id="generateButton" disabled="true">Loading generator...</button>
@@ -57,9 +57,6 @@
       <label for="form_cost">Cost:</label>
       <input type="number" style="font-family:'Stargate'" id="form_cost" />
       <br />
-      <input type="checkbox" id="form_background" value="use"/>
-      <label for="form_background">Use black background? </label>
-      <br />
       <div id="div_stats">
         <br />
         <label for="form_att1">Unevolved attack:</label>
@@ -86,6 +83,16 @@
         <br />
         <textarea id="form_text2" rows="12" cols="50"></textarea>
       </div>
+      <br />
+      <label for="form_illus">Illustrator:</label>
+      <input type="text" id="form_illus"/>
+      <br />
+      <input type="checkbox" id="form_background" value="use"/>
+      <label for="form_background">Use black background</label>
+      <br />
+      <input type="checkbox" id="form_token" value="use"/>
+      <label for="form_token">Token card</label>
+      <br />
     </form>
     <canvas id="cardTemplate" width="1920" height="1120" style="display:none"></canvas>
   </body>
