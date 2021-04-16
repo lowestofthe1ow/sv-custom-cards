@@ -48,6 +48,7 @@ window.onload = function() {
   ];
   preloadImages(images, loadedImages, function() {
     document.getElementById("loadGif").style.display = "none";
+    document.getElementById("form_art").disabled = false;
     document.getElementById("generateButton").disabled = false;
     document.getElementById("generateButton").innerHTML = "Generate card"
   });
