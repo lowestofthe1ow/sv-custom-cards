@@ -34,8 +34,7 @@ window.onload = function() {
     "img/generator/amulet/amulet_bronze.png",
     "img/generator/spell/spell_bronze.png",
     // Backgrounds (23-31)
-    "img/generator/layout/backgrounds/background_Morning_Star.png"
-    /*
+    "img/generator/layout/backgrounds/background_Morning_Star.png",
     "img/generator/layout/backgrounds/background_Forest.png",
     "img/generator/layout/backgrounds/background_Castle.png",
     "img/generator/layout/backgrounds/background_Laboratory.png",
@@ -44,7 +43,6 @@ window.onload = function() {
     "img/generator/layout/backgrounds/background_Darkstone.png",
     "img/generator/layout/backgrounds/background_Hall.png",
     "img/generator/layout/backgrounds/bg_tree_2_1.png"
-    */
   ];
   preloadImages(images, loadedImages, function() {
     document.getElementById("loadGif").style.display = "none";
@@ -67,6 +65,7 @@ function preloadImages(srcArray, imgArray, callback) {
       }
     };
     img.src = srcArray[i];
+    document.getElementById("imageloader").appendChild(img);
     imgArray.push(img);
   }
 }
@@ -78,9 +77,7 @@ function formatText(areaText) {
   var selectedText = text.substring(area.selectionStart, area.selectionEnd);
   var beforeText = text.substring(0, area.selectionStart);
   var afterText = text.substring(area.selectionEnd, text.length);
-  if (selectedText.trim().length != 0) {
-    area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
-  };
+  area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
 }
 
 // Change visible settings for follower, amulet, and spell
@@ -123,7 +120,7 @@ function generate() {
   var illus = document.getElementById("form_illus").value;
   var useBlackBackground = document.getElementById("form_background").checked;
   var isToken = document.getElementById("form_token").checked;
-  var backgroundImage = new fabric.Image(loadedImages[23], {
+  var backgroundImage = new fabric.Image(loadedImages[23+Number(cardClass)], {
     opacity: 0.4,
   })
   var scaleFactor;
@@ -211,7 +208,7 @@ function loadImage() {
   var artImage = new Image();
   artImage.src = URL.createObjectURL(art.files[art.files.length - 1]);
   artImage.onload = function() {
-    loadedImages[5] = artImage
+    loadedImages[5] = artImage;
     document.getElementById("generateButton").disabled = false;
     document.getElementById("generateButton").innerHTML = "Generate card";
   }
