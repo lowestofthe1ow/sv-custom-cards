@@ -213,6 +213,7 @@ function generate(backgroundImage) {
   download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
 
   // Re-enable generate button
+  document.getElementById("form_art").disabled = false;
   document.getElementById("generateButton").disabled = false;
   document.getElementById("generateButton").innerHTML = "Generate card";
 }
