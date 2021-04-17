@@ -33,16 +33,6 @@ window.onload = function() {
     "img/generator/follower/follower_bronze.png",
     "img/generator/amulet/amulet_bronze.png",
     "img/generator/spell/spell_bronze.png",
-    // Backgrounds (23-31)
-    "img/generator/layout/backgrounds/background_Morning_Star.png",
-    "img/generator/layout/backgrounds/background_Forest.png",
-    "img/generator/layout/backgrounds/background_Castle.png",
-    "img/generator/layout/backgrounds/background_Laboratory.png",
-    "img/generator/layout/backgrounds/background_Mountains.png",
-    "img/generator/layout/backgrounds/background_Mansion.png",
-    "img/generator/layout/backgrounds/background_Darkstone.png",
-    "img/generator/layout/backgrounds/background_Hall.png",
-    "img/generator/layout/backgrounds/bg_tree_2_1.png"
   ];
   preloadImages(images, loadedImages, function() {
     document.getElementById("loadGif").style.display = "none";
@@ -52,6 +42,32 @@ window.onload = function() {
   });
   document.getElementById("form_art").value = null;
   toggleText2();
+}
+
+function loadBackgroundImage(cardClass) {
+  const classBackgrounds = [
+    "img/generator/layout/backgrounds/background_Morning_Star.png",
+    "img/generator/layout/backgrounds/background_Forest.png",
+    "img/generator/layout/backgrounds/background_Castle.png",
+    "img/generator/layout/backgrounds/background_Laboratory.png",
+    "img/generator/layout/backgrounds/background_Mountains.png",
+    "img/generator/layout/backgrounds/background_Mansion.png",
+    "img/generator/layout/backgrounds/background_Darkstone.png",
+    "img/generator/layout/backgrounds/background_Hall.png",
+    "img/generator/layout/backgrounds/bg_tree_2_1.png"
+  ]
+  var loadedBackgrounds = [];
+  var backgroundImage = new Image();
+  document.getElementById("generateButton").disabled = true;
+  document.getElementById("form_art").disabled = true;
+  document.getElementById("generateButton").innerHTML = "Generating...";
+  backgroundImage.src = classBackgrounds[cardClass];
+  backgroundImage.onload = function() {
+    var backgroundFabric = new fabric.Image(backgroundImage, {
+      opacity: 0.4,
+    });
+    generate(backgroundFabric);
+  };
 }
 
 function preloadImages(srcArray, imgArray, callback) {
@@ -93,7 +109,7 @@ function toggleText2() {
   }
 }
 
-function generate() {
+function generate(backgroundImage) {
   // Create canvas
   var canvas = new fabric.StaticCanvas("cardTemplate", {
     width: 1920,
@@ -118,11 +134,7 @@ function generate() {
   var art = document.getElementById("form_art");
   var rarity = document.getElementById("form_rarity").value;
   var illus = document.getElementById("form_illus").value;
-  var useBlackBackground = document.getElementById("form_background").checked;
   var isToken = document.getElementById("form_token").checked;
-  var backgroundImage = new fabric.Image(loadedImages[23+Number(cardClass)], {
-    opacity: 0.4,
-  })
   var scaleFactor;
   var fileName = name.replace(/\s+/g, '');
 
@@ -163,14 +175,14 @@ function generate() {
 
   // Set background image
   scaleFactor = canvas.height < backgroundImage.height ? canvas.width / backgroundImage.width : canvas.height / backgroundImage.height;
-  if (lines1+lines2 <= 12 && useBlackBackground == false) {
+  if (lines1+lines2 <= 12) {
     canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
       originX: "center",
       originY: "center",
       top: canvas.height / 2,
       left: canvas.width / 2
     })
-  } else if (useBlackBackground == false) {
+  } else {
     canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
       scaleX: scaleFactor,
       scaleY: scaleFactor,
@@ -199,6 +211,10 @@ function generate() {
 
   // Download image
   download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
+
+  // Re-enable generate button
+  document.getElementById("generateButton").disabled = false;
+  document.getElementById("generateButton").innerHTML = "Generate card";
 }
 
 function loadImage() {

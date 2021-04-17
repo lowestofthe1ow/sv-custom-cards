@@ -15,7 +15,7 @@
     <p style="font-family:'AGaramondPro'">May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
     <br />
     <div id="loadGif"><img src="img/ui/ajax-loader.gif"/><br /></div>
-    <button onclick="generate()" id="generateButton" disabled="true">Loading generator...</button>
+    <button onclick="loadBackgroundImage(document.getElementById('form_class').value)" id="generateButton" disabled="true">Loading generator...</button>
     <form>
       <label for="form_name">Name:</label>
       <input type="text" id="form_name"/>
@@ -86,9 +86,6 @@
       <br />
       <label for="form_illus">Illustrator:</label>
       <input type="text" id="form_illus"/>
-      <br />
-      <input type="checkbox" id="form_background" value="use"/>
-      <label for="form_background">Use black background</label>
       <br />
       <input type="checkbox" id="form_token" value="use"/>
       <label for="form_token">Token card</label>
