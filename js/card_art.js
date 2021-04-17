@@ -58,8 +58,9 @@ function loadBackgroundImage(cardClass) {
   ]
   var loadedBackgrounds = [];
   var backgroundImage = new Image();
-  document.getElementById("generateButton").disabled = true;
-  document.getElementById("form_art").disabled = true;
+  for (var i = 0; i < document.querySelectorAll(".cardData").length; i++) {
+    document.querySelectorAll(".cardData")[i].disabled = true;
+  }
   document.getElementById("generateButton").innerHTML = "Generating...";
   backgroundImage.src = classBackgrounds[cardClass];
   backgroundImage.onload = function() {
@@ -213,8 +214,9 @@ function generate(backgroundImage) {
   download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
 
   // Re-enable generate button
-  document.getElementById("form_art").disabled = false;
-  document.getElementById("generateButton").disabled = false;
+  for (var i = 0; i < document.querySelectorAll(".cardData").length; i++) {
+    document.querySelectorAll(".cardData")[i].disabled = false;
+  }
   document.getElementById("generateButton").innerHTML = "Generate card";
 }
 
