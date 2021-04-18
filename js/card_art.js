@@ -33,6 +33,25 @@ window.onload = function() {
     "img/generator/follower/follower_bronze.png",
     "img/generator/amulet/amulet_bronze.png",
     "img/generator/spell/spell_bronze.png",
+    // Gems (23 - 31)
+    "img/generator/gems/gem_neutral.png",
+    "img/generator/gems/gem_forest.png",
+    "img/generator/gems/gem_sword.png",
+    "img/generator/gems/gem_rune.png",
+    "img/generator/gems/gem_dragon.png",
+    "img/generator/gems/gem_shadow.png",
+    "img/generator/gems/gem_blood.png",
+    "img/generator/gems/gem_haven.png",
+    "img/generator/gems/gem_portal.png",
+    // Emblems (32 - 39)
+    "img/generator/emblems/emblem_forest.png",
+    "img/generator/emblems/emblem_sword.png",
+    "img/generator/emblems/emblem_rune.png",
+    "img/generator/emblems/emblem_dragon.png",
+    "img/generator/emblems/emblem_shadow.png",
+    "img/generator/emblems/emblem_blood.png",
+    "img/generator/emblems/emblem_haven.png",
+    "img/generator/emblems/emblem_portal.png",
   ];
   preloadImages(images, loadedImages, function() {
     document.getElementById("loadGif").style.display = "none";
@@ -195,9 +214,9 @@ function generate(backgroundImage) {
   }
 
   // Draw elements common to all card types
-  drawInitial(name, canvas, cardClasses[Number(cardClass)], trait, illus, isToken);
+  drawInitial(name, canvas, cardClasses[Number(cardClass)], trait, illus, isToken, cardClass);
 
-  drawArt(canvas, type, name, cost, stats, art, rarity);
+  drawArt(canvas, type, name, cost, stats, art, rarity, cardClass);
 
   // Draw text box and card text
   drawTextBox(type, lines1, lines2, canvas);
@@ -233,10 +252,21 @@ function loadImage() {
   }
 }
 
-function drawArt(canvas, type, name, cost, stats, art, rarity) {
+function drawArt(canvas, type, name, cost, stats, art, rarity, cardClass) {
   var frame = loadedImages[11+Number(type)+(Number(rarity)*3)];
-  canvas.add(new fabric.Image(frame, {top: 221, left: 136, scaleX: 576/536, scaleY: 750/698}));
-  var object = new fabric.Image(loadedImages[5], {top: 342, left: 203})
+  canvas.add(new fabric.Image(frame, {top: 221, left: 136, scaleX: 1.075, scaleY: 1.075}));
+  var gem = loadedImages[23+Number(cardClass)];
+  canvas.add(new fabric.Image(gem, {
+    top: type == 2 ? 878 : 879,
+    left: 413,
+    scaleX: 1.1,
+    scaleY: 1.1,
+    shadow: {
+      color: "rgba(0, 0, 0, 1)",
+      blur: 3,
+    },
+  }));
+  var object = new fabric.Image(loadedImages[5], {top: 342, left: 203});
   object.scaleX = 440 / object.width;
   object.scaleY = 560 / object.height;
   canvas.add(object);
@@ -314,16 +344,20 @@ function drawArt(canvas, type, name, cost, stats, art, rarity) {
 }
 
 // Draw elements common to all card types
-function drawInitial(name, canvas, cardClass, trait, illus, token) {
+function drawInitial(name, canvas, cardClassName, trait, illus, token, cardClassInt) {
   canvas.add(new fabric.Text(name, {top: 113, left: 133, fontFamily: "Seagull", fontSize: 60, fill: "#FFFDEE"}));
   canvas.add(new fabric.Text("Class:", {top: 75, left: 1406, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
   canvas.add(new fabric.Text("Trait:", {top: 128, left: 1419, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
-  canvas.add(new fabric.Text(cardClass, {top: 75, left: 1553, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
+  canvas.add(new fabric.Text(cardClassName, {top: 75, left: 1553, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
   canvas.add(new fabric.Text(trait, {top: 128, left: 1553, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
   canvas.add(new fabric.Text("Illustrator:", {top: 987, left: 100, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
   canvas.add(new fabric.Text(illus, {top: 987, left: 281, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
   if (token == true) {
     canvas.add(new fabric.Text("*This is a token card.", {top: 1020, left: 100, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
+  }
+  if (cardClassInt != 0) {
+    var emblem = loadedImages[31+Number(cardClassInt)];
+    canvas.add(new fabric.Image(emblem, {top: 70, left: 1505}));
   }
 }
 
