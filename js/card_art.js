@@ -73,7 +73,7 @@ function loadBackgroundImage(cardClass) {
     "img/generator/layout/backgrounds/background_Mansion.png",
     "img/generator/layout/backgrounds/background_Darkstone.png",
     "img/generator/layout/backgrounds/background_Hall.png",
-    "img/generator/layout/backgrounds/bg_tree_2_1.png"
+    "img/generator/layout/backgrounds/background_Portal.png"
   ]
   var loadedBackgrounds = [];
   var backgroundImage = new Image();
