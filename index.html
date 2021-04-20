@@ -15,7 +15,7 @@
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
     <h1>Shadowverse Custom Card Generator</h1>
-    <p style="font-family:'AGaramondPro'">V1.1.1. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
+    <p style="font-family:'AGaramondPro'">V1.2.1. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
     <br />
     <div id="ui_crop"></div>
     <br />
@@ -92,8 +92,11 @@
       <label for="form_illus">Illustrator:</label>
       <input type="text" class="cardData" id="form_illus"/>
       <br />
-      <input type="checkbox" class="cardData" id="form_token" value="use"/>
+      <input type="checkbox" class="cardData" id="form_token"/>
       <label for="form_token">Token card</label>
+      <br />
+      <input type="checkbox" class="cardData" id="form_blackBG"/>
+      <label for="form_blackBG">Use black background</label>
       <br />
     </form>
     <canvas id="cardTemplate" width="1920" height="1120" style="display:none"></canvas>

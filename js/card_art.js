@@ -125,14 +125,18 @@ window.onload = function() {
       console.log(base64)
       croppedArt.src = base64;
       croppedArt.onload = function() {
-        // Load background image
-        var backgroundImage = new Image();
-        backgroundImage.src = classBackgrounds[Number(document.getElementById("form_class").value)];
-        backgroundImage.onload = function() {
-          var backgroundFabric = new fabric.Image(backgroundImage, {
-            opacity: 0.4,
-          });
-          generate(backgroundFabric, croppedArt);
+        if(document.getElementById("form_blackBG").checked == false) {
+          // Load background image
+          var backgroundImage = new Image();
+          backgroundImage.src = classBackgrounds[Number(document.getElementById("form_class").value)];
+          backgroundImage.onload = function() {
+            var backgroundFabric = new fabric.Image(backgroundImage, {
+              opacity: 0.4,
+            });
+            generate(backgroundFabric, croppedArt);
+          };
+        } else {
+          generate(null, croppedArt);
         };
       };
     });
@@ -221,24 +225,26 @@ window.onload = function() {
     canvas.setHeight(getHeight(lines1 + lines2, type));
 
     // Set background image
-    scaleFactor = canvas.height < backgroundImage.height ? canvas.width / backgroundImage.width : canvas.height / backgroundImage.height;
-    if (lines1+lines2 <= 12) {
-      canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
-        originX: "center",
-        originY: "center",
-        top: canvas.height / 2,
-        left: canvas.width / 2
-      })
-    } else {
-      canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
-        scaleX: scaleFactor,
-        scaleY: scaleFactor,
-        originX: "center",
-        originY: "center",
-        top: canvas.height / 2,
-        left: canvas.width / 2
-      });
-    }
+    if (document.getElementById("form_blackBG").checked == false) {
+      scaleFactor = canvas.height < backgroundImage.height ? canvas.width / backgroundImage.width : canvas.height / backgroundImage.height;
+      if (lines1+lines2 <= 12) {
+        canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
+          originX: "center",
+          originY: "center",
+          top: canvas.height / 2,
+          left: canvas.width / 2
+        })
+      } else {
+        canvas.setBackgroundImage(backgroundImage, canvas.renderAll.bind(canvas), {
+          scaleX: scaleFactor,
+          scaleY: scaleFactor,
+          originX: "center",
+          originY: "center",
+          top: canvas.height / 2,
+          left: canvas.width / 2
+        });
+      };
+    };
 
     // Draw elements common to all card types
     drawInitial(name, canvas, cardClasses[Number(cardClass)], trait, illus, isToken, cardClass);
