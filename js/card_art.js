@@ -1,3 +1,30 @@
+// Preload array of images
+function preloadImages(srcArray, imgArray, callback) {
+  var remaining = srcArray.length - 1;
+  for (var i = 0; i < srcArray.length; i++) {
+    var img = new Image();
+    img.onload = function() {
+      remaining -= 1;
+      if (remaining <= 0) {
+        callback();
+      }
+    };
+    img.src = srcArray[i];
+    document.getElementById("imageloader").appendChild(img);
+    imgArray.push(img);
+  }
+}
+
+// Bold text shortcut button
+function formatText(areaText) {
+  var area = document.getElementById(areaText);
+  var text = area.value;
+  var selectedText = text.substring(area.selectionStart, area.selectionEnd);
+  var beforeText = text.substring(0, area.selectionStart);
+  var afterText = text.substring(area.selectionEnd, text.length);
+  area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
+}
+
 window.onload = function() {
   // Load images
   const loadedImages = [];
@@ -122,7 +149,6 @@ window.onload = function() {
     document.getElementById("generateButton").innerHTML = "Generating...";
     // Load images
     cropper.result("base64").then(function(base64) {
-      console.log(base64)
       croppedArt.src = base64;
       croppedArt.onload = function() {
         if(document.getElementById("form_blackBG").checked == false) {
@@ -141,23 +167,6 @@ window.onload = function() {
       };
     });
   });
-
-  // Preload array of images
-  function preloadImages(srcArray, imgArray, callback) {
-    var remaining = srcArray.length - 1;
-    for (var i = 0; i < srcArray.length; i++) {
-      var img = new Image();
-      img.onload = function() {
-        remaining -= 1;
-        if (remaining <= 0) {
-          callback();
-        }
-      };
-      img.src = srcArray[i];
-      document.getElementById("imageloader").appendChild(img);
-      imgArray.push(img);
-    }
-  }
 
   // Generate
   function generate(backgroundImage, croppedArt) {
@@ -553,14 +562,4 @@ window.onload = function() {
       canvas.add(new fabric.Image(loadedImages[9], {top: lineDrawPositionY, left: 753}));
     }
   }
-}
-
-// Bold text shortcut button
-function formatText(areaText) {
-  var area = document.getElementById(areaText);
-  var text = area.value;
-  var selectedText = text.substring(area.selectionStart, area.selectionEnd);
-  var beforeText = text.substring(0, area.selectionStart);
-  var afterText = text.substring(area.selectionEnd, text.length);
-  area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
 }
