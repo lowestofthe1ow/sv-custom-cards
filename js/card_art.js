@@ -1,20 +1,3 @@
-// Preload array of images
-function preloadImages(srcArray, imgArray, callback) {
-  var remaining = srcArray.length - 1;
-  for (var i = 0; i < srcArray.length; i++) {
-    var img = new Image();
-    img.onload = function() {
-      remaining -= 1;
-      if (remaining <= 0) {
-        callback();
-      }
-    };
-    img.src = srcArray[i];
-    document.getElementById("imageloader").appendChild(img);
-    imgArray.push(img);
-  }
-}
-
 // Bold text shortcut button
 function formatText(areaText) {
   var area = document.getElementById(areaText);
@@ -27,7 +10,7 @@ function formatText(areaText) {
 
 window.onload = function() {
   // Load images
-  const loadedImages = [];
+  var loadedImages = [];
   const images = [
     // Follower text box (0-3)
     "img/generator/layout/textbox_follower/0.png",
@@ -167,6 +150,23 @@ window.onload = function() {
       };
     });
   });
+
+  // Preload array of images
+  function preloadImages(srcArray, imgArray, callback) {
+    var remaining = srcArray.length - 1;
+    for (var i = 0; i < srcArray.length; i++) {
+      var img = new Image();
+      img.onload = function() {
+        remaining -= 1;
+        if (remaining <= 0) {
+          callback();
+        }
+      };
+      img.src = srcArray[i];
+      document.getElementById("imageloader").appendChild(img);
+      imgArray.push(img);
+    }
+  }
 
   // Generate
   function generate(backgroundImage, croppedArt) {
