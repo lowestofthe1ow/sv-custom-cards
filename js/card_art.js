@@ -155,16 +155,6 @@ window.onload = function() {
     }
   }
 
-  // Bold text shortcut button
-  function formatText(areaText) {
-    var area = document.getElementById(areaText);
-    var text = area.value;
-    var selectedText = text.substring(area.selectionStart, area.selectionEnd);
-    var beforeText = text.substring(0, area.selectionStart);
-    var afterText = text.substring(area.selectionEnd, text.length);
-    area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
-  }
-
   // Generate
   function generate(backgroundImage, croppedArt) {
     // Create canvas
@@ -557,4 +547,14 @@ window.onload = function() {
       canvas.add(new fabric.Image(loadedImages[9], {top: lineDrawPositionY, left: 753}));
     }
   }
+}
+
+// Bold text shortcut button
+function formatText(areaText) {
+  var area = document.getElementById(areaText);
+  var text = area.value;
+  var selectedText = text.substring(area.selectionStart, area.selectionEnd);
+  var beforeText = text.substring(0, area.selectionStart);
+  var afterText = text.substring(area.selectionEnd, text.length);
+  area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
 }
