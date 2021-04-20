@@ -13,6 +13,13 @@
   src: url(font/AGaramondPro-Regular.otf);
 }
 
+#ui_crop {
+  /*display: none;*/
+  max-width: 440px;
+  height: auto;
+  color: rgba(0,0,0,0);
+}
+
 body {
   font-family: "Seagull";
   height: 100%;

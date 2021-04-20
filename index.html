@@ -3,26 +3,30 @@
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
+    <link rel="stylesheet" type="text/css" href="css/croppie.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="icon" href="img/ui/favicon.png" type="image/png">
     <title>Shadowverse Custom Card Generator</title>
   </head>
   <body>
     <div style="display:none" id="imageloader"></div>
+    <script type="text/javascript" src="js/croppie.min.js"></script>
     <script type="text/javascript" src="js/fabric.min.js"></script>
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
     <h1>Shadowverse Custom Card Generator</h1>
-    <p style="font-family:'AGaramondPro'">May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
+    <p style="font-family:'AGaramondPro'">V1.1.0. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
+    <br />
+    <div id="ui_crop"></div>
     <br />
     <div id="loadGif"><img src="img/ui/ajax-loader.gif"/><br /></div>
-    <button onclick="loadBackgroundImage(document.getElementById('form_class').value)" id="generateButton" disabled="true" class="cardData">Loading generator...</button>
+    <button id="generateButton" disabled="true" class="cardData">Loading generator...</button>
     <form>
       <label for="form_name">Name:</label>
       <input type="text" class="cardData" id="form_name"/>
       <br />
       <label for="form_art">Image:</label>
-      <input type="file" accept="image/png, image/jpeg" onchange="loadImage()" class="cardData" id="form_art" disabled="true"/>
+      <input type="file" accept="image/png, image/jpeg" class="cardData" id="form_art" disabled="true"/>
       <br />
       <label for="form_class">Class:</label>
       <select class="cardData" id="form_class">
@@ -38,7 +42,7 @@
       </select>
       <br />
       <label for="form_type">Type:</label>
-      <select class="cardData" id="form_type" onchange="toggleText2()" value=0>
+      <select class="cardData" id="form_type" value=0>
         <option value=0>Follower</option>
         <option value=1>Amulet</option>
         <option value=2>Spell</option>
