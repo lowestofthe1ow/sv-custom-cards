@@ -8,6 +8,27 @@ function formatText(areaText) {
   area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
 }
 
+// Preload array of images
+function preloadImages(srcArray, imgArray, callback) {
+  var remaining = srcArray.length;
+  for (var i = 0; i < srcArray.length; i++) {
+    var img = new Image();
+    img.addEventListener("load", function() {
+      remaining -= 1;
+      if (remaining <= 0) {
+        callback();
+      }
+    });
+    img.addEventListener("error", function() {
+      console.log("Image failed to load at " + srcArray[i]);
+    })
+    img.crossOrigin = "anonymous";
+    img.src = srcArray[i];
+    document.getElementById("imageloader").appendChild(img);
+    imgArray.push(img);
+  }
+}
+
 window.onload = function() {
   // Load images
   var loadedImages = [];
@@ -130,43 +151,25 @@ window.onload = function() {
       document.querySelectorAll(".cardData")[i].disabled = true;
     }
     document.getElementById("generateButton").innerHTML = "Generating...";
+
     // Load images
     cropper.result("base64").then(function(base64) {
       croppedArt.src = base64;
-      croppedArt.onload = function() {
+      croppedArt.img.addEventListener("load", function() {
         if(document.getElementById("form_blackBG").checked == false) {
-          // Load background image
           var backgroundImage = new Image();
-          backgroundImage.src = classBackgrounds[Number(document.getElementById("form_class").value)];
-          backgroundImage.onload = function() {
+          backgroundImage.addEventListener("load", function() {
             var backgroundFabric = new fabric.Image(backgroundImage, {
               opacity: 0.4,
             });
             generate(backgroundFabric, croppedArt);
-          };
+          });
         } else {
           generate(null, croppedArt);
-        };
-      };
+        }
+      });
     });
   });
-
-  // Preload array of images
-  function preloadImages(srcArray, imgArray, callback) {
-    var remaining = srcArray.length - 1;
-    for (var i = 0; i < srcArray.length; i++) {
-      var img = new Image();
-      img.onload = function() {
-        remaining -= 1;
-        if (remaining <= 0) {
-          callback();
-        }
-      };
-      img.src = srcArray[i];
-      document.getElementById("imageloader").appendChild(img);
-      imgArray.push(img);
-    }
-  }
 
   // Generate
   function generate(backgroundImage, croppedArt) {
