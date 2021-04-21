@@ -164,6 +164,7 @@ window.onload = function() {
             });
             generate(backgroundFabric, croppedArt);
           });
+          backgroundImage.src = classBackgrounds[Number(document.getElementById("form_class").value)];
         } else {
           generate(null, croppedArt);
         }
