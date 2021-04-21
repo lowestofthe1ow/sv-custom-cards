@@ -155,7 +155,7 @@ window.onload = function() {
     // Load images
     cropper.result("base64").then(function(base64) {
       croppedArt.src = base64;
-      croppedArt.img.addEventListener("load", function() {
+      croppedArt.addEventListener("load", function() {
         if(document.getElementById("form_blackBG").checked == false) {
           var backgroundImage = new Image();
           backgroundImage.addEventListener("load", function() {
