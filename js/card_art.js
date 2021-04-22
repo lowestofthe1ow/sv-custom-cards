@@ -15,15 +15,14 @@ function preloadImages(srcArray, imgArray, callback) {
     var img = new Image();
     img.addEventListener("load", function() {
       remaining -= 1;
-      document.getElementById("generateButton").innerHTML = "Loading generator (" + String((Math.round(100*(srcArray.length - remaining)/srcArray.length))) + "%)...";
+      document.getElementById("generateButton").innerHTML = "Loading (" + String((Math.round(100*(srcArray.length - remaining)/srcArray.length))) + "%)...";
       if (remaining <= 0) {
         callback();
       };
     });
     img.addEventListener("error", function() {
-      var retry = new Image();
-      retry.crossOrigin = "anonymous";
-      retry.src = srcArray[i];
+      this.crossOrigin = "anonymous";
+      this.src = srcArray[i];
     })
     img.crossOrigin = "anonymous";
     img.src = srcArray[i];
@@ -101,7 +100,6 @@ window.onload = function() {
   document.getElementById("form_art").disabled = true;
 
   preloadImages(images, loadedImages, function() {
-    document.getElementById("loadGif").style.display = "none";
     document.getElementById("form_art").disabled = false;
     document.getElementById("generateButton").disabled = false;
     document.getElementById("generateButton").innerHTML = "Generate card";
@@ -112,10 +110,11 @@ window.onload = function() {
   // Initialize cropper
   var croppedArt = new Image();
   var backgroundImage = new Image();
+  var cropperWidth = document.documentElement.clientWidth >= 470 ? 440 : (document.documentElement.clientWidth - 30);
   var image;
   var cropper = new Croppie(document.getElementById("ui_crop"), {
-    viewport: { width: 440, height: 560 },
-    boundary: { width: 440, height: 560 },
+    viewport: { width: cropperWidth, height: cropperWidth*(14/11) },
+    boundary: { width: cropperWidth, height: cropperWidth*(14/11) },
     mouseWheelZoom: false
   });
 
@@ -160,13 +159,20 @@ window.onload = function() {
     document.getElementById("generateButton").innerHTML = "Generating...";
 
     // Load images
-    cropper.result("base64").then(function(base64) {
+    cropper.result({
+      type: "base64",
+      size: {width: 440, height: 560},
+      format: "png",
+      quality: 1,
+      circle: false
+    }).then(function(base64) {
       croppedArt.src = base64;
     });
   });
 
   croppedArt.addEventListener("load", function() {
     if(document.getElementById("form_blackBG").checked == false) {
+      backgroundImage.crossOrigin = "anonymous";
       backgroundImage.src = classBackgrounds[Number(document.getElementById("form_class").value)];
     } else {
       generate(null, croppedArt);
@@ -178,6 +184,11 @@ window.onload = function() {
       opacity: 0.4,
     });
     generate(backgroundFabric, croppedArt);
+  });
+
+  backgroundImage.addEventListener("error", function() {
+    this.crossOrigin = "anonymous";
+    this.src = classBackgrounds[Number(document.getElementById("form_class").value)];
   });
 
   // Generate

@@ -3,6 +3,11 @@
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preload" href="css/font/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="preload" href="css/font/seag.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="preload" href="css/font/AGaramondPro-Regular.otf" as="font" type="font/otf" crossorigin="anonymous" />
+    <link rel="preload" href="css/font/stargate.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="css/croppie.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="icon" href="img/ui/favicon.png" type="image/png">
@@ -14,91 +19,113 @@
     <script type="text/javascript" src="js/fabric.min.js"></script>
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
-    <h1>Shadowverse Custom Card Generator</h1>
-    <p style="font-family:'font_Garamond'">V1.2.4. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
     <br />
-    <div id="ui_crop"></div>
+    <h1 style="font-family:'font_Roboto'; line-height:24px; text-align: center;">Shadowverse Custom Card Generator</h1>
+    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center;">V1.3.0. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
+    <div style="opacity:0;">
+      <span style="font-family:font_Seagull"></span>
+      <span style="font-family:font_Stargate"></span>
+      <span style="font-family:font_Garamond"></span>
+    </div>
     <br />
-    <div id="loadGif"><img src="img/ui/ajax-loader.gif"/><br /></div>
-    <button id="generateButton" class="cardData">Loading generator...</button>
-    <form>
-      <label for="form_name">Name:</label>
-      <input type="text" class="cardData" id="form_name"/>
+    <hr style="width:75%" />
+    <br />
+    <div id="mainFlexContainer">
+      <div id="ui_crop" style="padding: 10px;"></div>
       <br />
-      <label for="form_art">Image:</label>
-      <input type="file" accept="image/png, image/jpeg" class="cardData" id="form_art"/>
-      <br />
-      <label for="form_class">Class:</label>
-      <select class="cardData" id="form_class">
-        <option value=0>Neutral</option>
-        <option value=1>Forestcraft</option>
-        <option value=2>Swordcraft</option>
-        <option value=3>Runecraft</option>
-        <option value=4>Dragoncraft</option>
-        <option value=5>Shadowcraft</option>
-        <option value=6>Bloodcraft</option>
-        <option value=7>Havencraft</option>
-        <option value=8>Portalcraft</option>
-      </select>
-      <br />
-      <label for="form_type">Type:</label>
-      <select class="cardData" id="form_type" value=0>
-        <option value=0>Follower</option>
-        <option value=1>Amulet</option>
-        <option value=2>Spell</option>
-      </select>
-      <br />
-      <label for="form_rarity">Rarity:</label>
-      <select class="cardData" id="form_rarity" value=0>
-        <option value=0>Legendary</option>
-        <option value=1>Gold</option>
-        <option value=2>Silver</option>
-        <option value=3>Bronze</option>
-      </select>
-      <br />
-      <label for="form_trait">Trait:</label>
-      <input type="text" class="cardData" id="form_trait"/>
-      <br />
-      <label for="form_cost">Cost:</label>
-      <input type="number" style="font-family:'font_Stargate'" class="cardData" id="form_cost" />
-      <br />
-      <div id="div_stats">
-        <br />
-        <label for="form_att1">Unevolved attack:</label>
-        <input type="number" style="font-family:'font_Stargate'" class="cardData" id="form_att1"/>
-        <br />
-        <label for="form_att1">Unevolved defense:</label>
-        <input type="number" style="font-family:'font_Stargate'" class="cardData" id="form_def1"/>
-        <br /><br />
-        <label for="form_att1">Evolved attack:</label>
-        <input type="number" style="font-family:'font_Stargate'" class="cardData" id="form_att2"/>
-        <br />
-        <label for="form_att1">Evolved defense:</label>
-        <input type="number" style="font-family:'font_Stargate'" class="cardData" id="form_def2"/>
+      <div style="padding: 10px;">
+        <form>
+          <button id="generateButton" type="button" class="cardData">Loading...</button>
+          <input type="file" accept="image/png, image/jpeg" class="cardData" id="form_art"/>
+          <label for="form_art" id="uploadArt">
+            Upload Image
+          </label>
+          <br /><br />
+          <label for="form_name">Name:</label><br />
+          <input type="text" class="cardData" id="form_name"/>
+          <br />
+          <label for="form_trait">Trait:</label><br />
+          <input type="text" class="cardData" id="form_trait"/>
+          <br />
+          <label for="form_class">Class:</label><br />
+          <select class="cardData" id="form_class">
+            <option value=0>Neutral</option>
+            <option value=1>Forestcraft</option>
+            <option value=2>Swordcraft</option>
+            <option value=3>Runecraft</option>
+            <option value=4>Dragoncraft</option>
+            <option value=5>Shadowcraft</option>
+            <option value=6>Bloodcraft</option>
+            <option value=7>Havencraft</option>
+            <option value=8>Portalcraft</option>
+          </select>
+          <br />
+          <label for="form_type">Type:</label><br />
+          <select class="cardData" id="form_type" value=0>
+            <option value=0>Follower</option>
+            <option value=1>Amulet</option>
+            <option value=2>Spell</option>
+          </select>
+          <br />
+          <label for="form_rarity">Rarity:</label><br />
+          <select class="cardData" id="form_rarity" value=0>
+            <option value=0>Legendary</option>
+            <option value=1>Gold</option>
+            <option value=2>Silver</option>
+            <option value=3>Bronze</option>
+          </select>
+          <br />
+          <label for="form_cost">Cost:</label>
+          <input type="number" class="cardData" id="form_cost" />
+          <br />
+          <div id="div_stats">
+            <br />
+            <p style="line-height:0px;">Unevolved</p>
+            <label for="form_att1">Attack:</label>
+            <input type="number" class="cardData" id="form_att1"/>
+            <label for="form_att1">Defense:</label>
+            <input type="number" class="cardData" id="form_def1"/>
+            <br />
+            <p style="line-height:0px;">Evolved</p>
+            <label for="form_att1">Attack:</label>
+            <input type="number" class="cardData" id="form_att2"/>
+            <label for="form_att1">Defense:</label>
+            <input type="number" class="cardData" id="form_def2"/>
+          </div>
+          <br />
+        </form>
       </div>
-      <br />
-      <label for="form_text1" id="label_form_text1">Unevolved Text:</label>
-      <button type="button" onclick="formatText('form_text1')" class="cardData">Bold</button>
-      <br />
-      <textarea class="cardData" id="form_text1" rows="12" cols="50"></textarea>
-      <br />
-      <div id="div_text2">
-        <label for="form_text2" id="label_form_text2">Evolved Text:</label>
-        <button type="button" onclick="formatText('form_text2')" class="cardData">Bold</button>
-        <br />
-        <textarea class="cardData" id="form_text2" rows="12" cols="50"></textarea>
+      <div style="padding: 10px;">
+        <form>
+          <button type="button" class="boldButton" onclick="formatText('form_text1')" class="cardData">Bold</button>
+          <label for="form_text1" id="label_form_text1">Unevolved Text:</label>
+          <br />
+          <textarea class="cardData" id="form_text1" rows="12" cols="50"></textarea>
+          <br />
+          <div id="div_text2">
+            <button type="button" class="boldButton" onclick="formatText('form_text2')" class="cardData">Bold</button>
+            <label for="form_text2" id="label_form_text2">Evolved Text:</label>
+            <br />
+            <textarea class="cardData" id="form_text2" rows="12" cols="50"></textarea>
+          </div>
+          <br />
+          <label for="form_illus">Illustrator:</label><br />
+          <input type="text" class="cardData" id="form_illus"/>
+          <br />
+          <input type="checkbox" class="cardData" id="form_token"/>
+          <label for="form_token">Token card</label>
+          <br />
+          <input type="checkbox" class="cardData" id="form_blackBG"/>
+          <label for="form_blackBG">Use black background</label>
+          <br />
+        </form>
       </div>
-      <br />
-      <label for="form_illus">Illustrator:</label>
-      <input type="text" class="cardData" id="form_illus"/>
-      <br />
-      <input type="checkbox" class="cardData" id="form_token"/>
-      <label for="form_token">Token card</label>
-      <br />
-      <input type="checkbox" class="cardData" id="form_blackBG"/>
-      <label for="form_blackBG">Use black background</label>
-      <br />
-    </form>
+    </div>
     <canvas id="cardTemplate" width="1920" height="1120" style="display:none"></canvas>
+    <br />
+    <hr style="width:75%" />
+    <br />
+    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center">Made with love and the souls of the innocent. <a style="color:#000000" href="https://github.com/lowestofthe1ow/sv-custom-cards/issues">Feedback</a></p>
+    <br />
   </body>
 </html>
