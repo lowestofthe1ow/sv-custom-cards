@@ -21,7 +21,9 @@ function preloadImages(srcArray, imgArray, callback) {
       };
     });
     img.addEventListener("error", function() {
-      console.log("Image failed to load at " + srcArray[i]);
+      var retry = new Image();
+      retry.crossOrigin = "anonymous";
+      retry.src = srcArray[i];
     })
     img.crossOrigin = "anonymous";
     img.src = srcArray[i];
@@ -94,17 +96,22 @@ window.onload = function() {
     "img/generator/layout/backgrounds/background_Hall.png",
     "img/generator/layout/backgrounds/background_Portal.png"
   ]
+
+  document.getElementById("generateButton").disabled = true;
+  document.getElementById("form_art").disabled = true;
+
   preloadImages(images, loadedImages, function() {
     document.getElementById("loadGif").style.display = "none";
     document.getElementById("form_art").disabled = false;
     document.getElementById("generateButton").disabled = false;
-    document.getElementById("generateButton").innerHTML = "Generate card"
+    document.getElementById("generateButton").innerHTML = "Generate card";
   });
 
   document.getElementById("form_art").value = null;
 
   // Initialize cropper
-  var croppedArt = new Image;
+  var croppedArt = new Image();
+  var backgroundImage = new Image();
   var image;
   var cropper = new Croppie(document.getElementById("ui_crop"), {
     viewport: { width: 440, height: 560 },
@@ -138,7 +145,6 @@ window.onload = function() {
 
   // Crop
   document.getElementById("form_art").addEventListener("change", function() {
-    document.getElementById("ui_crop").style.display = "block";
     image = URL.createObjectURL(document.getElementById("form_art").files[0])
     cropper.bind({
         url: image,
@@ -156,21 +162,22 @@ window.onload = function() {
     // Load images
     cropper.result("base64").then(function(base64) {
       croppedArt.src = base64;
-      croppedArt.addEventListener("load", function() {
-        if(document.getElementById("form_blackBG").checked == false) {
-          var backgroundImage = new Image();
-          backgroundImage.addEventListener("load", function() {
-            var backgroundFabric = new fabric.Image(backgroundImage, {
-              opacity: 0.4,
-            });
-            generate(backgroundFabric, croppedArt);
-          });
-          backgroundImage.src = classBackgrounds[Number(document.getElementById("form_class").value)];
-        } else {
-          generate(null, croppedArt);
-        }
-      });
     });
+  });
+
+  croppedArt.addEventListener("load", function() {
+    if(document.getElementById("form_blackBG").checked == false) {
+      backgroundImage.src = classBackgrounds[Number(document.getElementById("form_class").value)];
+    } else {
+      generate(null, croppedArt);
+    }
+  });
+
+  backgroundImage.addEventListener("load", function() {
+    var backgroundFabric = new fabric.Image(backgroundImage, {
+      opacity: 0.4,
+    });
+    generate(backgroundFabric, croppedArt);
   });
 
   // Generate
