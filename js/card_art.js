@@ -15,9 +15,10 @@ function preloadImages(srcArray, imgArray, callback) {
     var img = new Image();
     img.addEventListener("load", function() {
       remaining -= 1;
+      document.getElementById("generateButton").innerHTML = "Loading generator (" + String((Math.round(100*(srcArray.length - remaining)/srcArray.length))) + "%)...";
       if (remaining <= 0) {
         callback();
-      }
+      };
     });
     img.addEventListener("error", function() {
       console.log("Image failed to load at " + srcArray[i]);
@@ -306,7 +307,7 @@ window.onload = function() {
     var widthValue = 310;
     var labelName = new fabric.Text((name), {
       left: 290,
-      fontFamily: "Seagull",
+      fontFamily: "font_Seagull",
       fontSize: 42,
       textAlign: "center",
       //lineHeight: (40/30)/1.13,
@@ -316,7 +317,7 @@ window.onload = function() {
       left: 136,
       top: 254,
       width: 129,
-      fontFamily: "AGaramondPro",
+      fontFamily: "font_Garamond",
       fontSize: 112,
       textAlign: "center",
       fill: "#FFFFFF",
@@ -336,7 +337,7 @@ window.onload = function() {
         left: 141,
         top: 830,
         width: 129,
-        fontFamily: "AGaramondPro",
+        fontFamily: "font_Garamond",
         fontSize: 102,
         textAlign: "center",
         fill: "#FFFFFF",
@@ -351,7 +352,7 @@ window.onload = function() {
         left: 575,
         top: 830,
         width: 129,
-        fontFamily: "AGaramondPro",
+        fontFamily: "font_Garamond",
         fontSize: 102,
         textAlign: "center",
         fill: "#FFFFFF",
@@ -378,16 +379,16 @@ window.onload = function() {
 
   // Draw elements common to all card types
   function drawInitial(name, canvas, cardClassName, trait, illus, token, cardClassInt) {
-    canvas.add(new fabric.Text(name, {top: 113, left: 133, fontFamily: "Seagull", fontSize: 60, fill: "#FFFDEE"}));
-    canvas.add(new fabric.Text("Class:", {top: 75, left: 1406, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
-    canvas.add(new fabric.Text("Trait:", {top: 128, left: 1419, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
-    canvas.add(new fabric.Text(cardClassName, {top: 75, left: 1553, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
-    canvas.add(new fabric.Text(trait, {top: 128, left: 1553, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
-    canvas.add(new fabric.Text("Illustrator:", {top: 987, left: 100, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#CACAB2"}));
-    canvas.add(new fabric.Text(illus, {top: 987, left: 281, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
+    canvas.add(new fabric.Text(name, {top: 113, left: 133, fontFamily: "font_Seagull", fontSize: 60, fill: "#FFFDEE"}));
+    canvas.add(new fabric.Text("Class:", {top: 75, left: 1406, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#CACAB2"}));
+    canvas.add(new fabric.Text("Trait:", {top: 128, left: 1419, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#CACAB2"}));
+    canvas.add(new fabric.Text(cardClassName, {top: 75, left: 1553, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"}));
+    canvas.add(new fabric.Text(trait, {top: 128, left: 1553, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"}));
+    canvas.add(new fabric.Text("Illustrator:", {top: 987, left: 100, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#CACAB2"}));
+    canvas.add(new fabric.Text(illus, {top: 987, left: 281, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"}));
     // Draw "This is a token card" text
     if (token == true) {
-      canvas.add(new fabric.Text("*This is a token card.", {top: 1020, left: 100, charSpacing: 20, fontFamily: "Seagull", fontSize: 36, fill: "#FFFDEE"}));
+      canvas.add(new fabric.Text("*This is a token card.", {top: 1020, left: 100, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"}));
     }
     // Draw class emblem
     if (cardClassInt != 0) {
@@ -417,7 +418,7 @@ window.onload = function() {
   function getLines(text, textSize) {
     var textbox = new fabric.Textbox(parseBB(text)[0], {
       width: 911,
-      fontFamily: "Seagull",
+      fontFamily: "font_Seagull",
       fontSize: textSize,
       fill: "#FFFDEE"
     });
@@ -431,7 +432,7 @@ window.onload = function() {
       top: 401,
       left: 804,
       width: 911,
-      fontFamily: "Seagull",
+      fontFamily: "font_Seagull",
       fontSize: 36,
       lineHeight: (51/36)/1.13,
       fill: "#FFFDEE",
@@ -450,7 +451,7 @@ window.onload = function() {
       top: 357,
       left: 804,
       width: 911,
-      fontFamily: "Seagull",
+      fontFamily: "font_Seagull",
       fontSize: 30,
       lineHeight: (40/30)/1.13,
       fill: "#FFFDEE",
@@ -462,7 +463,7 @@ window.onload = function() {
       top: 474+(40*linesSpacing),
       left: 804,
       width: 911,
-      fontFamily: "Seagull",
+      fontFamily: "font_Seagull",
       fontSize: 30,
       lineHeight: (40/30)/1.13,
       fill: "#FFFDEE"
@@ -474,7 +475,7 @@ window.onload = function() {
     canvas.add(new fabric.Text(stats[0], {
       top: 284,
       left: 1535,
-      fontFamily: "Stargate",
+      fontFamily: "font_Stargate",
       fontSize: 60,
       fill: "#FFFDEE",
       charSpacing: -80
@@ -482,7 +483,7 @@ window.onload = function() {
     canvas.add(new fabric.Text(stats[2], {
       top: 284,
       left: 1677,
-      fontFamily: "Stargate",
+      fontFamily: "font_Stargate",
       fontSize: 60,
       fill: "#FFFDEE",
       charSpacing: -80
@@ -491,7 +492,7 @@ window.onload = function() {
     canvas.add(new fabric.Text(stats[1], {
       top: 398+(40*linesSpacing),
       left: 1535,
-      fontFamily: "Stargate",
+      fontFamily: "font_Stargate",
       fontSize: 60,
       fill: "#FFFDEE",
       charSpacing: -80
@@ -499,7 +500,7 @@ window.onload = function() {
     canvas.add(new fabric.Text(stats[3], {
       top: 398+(40*linesSpacing),
       left: 1677,
-      fontFamily: "Stargate",
+      fontFamily: "font_Stargate",
       fontSize: 60,
       fill: "#FFFDEE",
       charSpacing: -80

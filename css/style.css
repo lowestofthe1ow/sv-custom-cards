@@ -1,15 +1,15 @@
 @font-face {
-  font-family: "Seagull";
+  font-family: "font_Seagull";
   src: url(font/seag.ttf);
 }
 
 @font-face {
-  font-family: "Stargate";
+  font-family: "font_Stargate";
   src: url(font/stargate.ttf);
 }
 
 @font-face {
-  font-family: "AGaramondPro";
+  font-family: "font_Garamond";
   src: url(font/AGaramondPro-Regular.otf);
 }
 
@@ -21,6 +21,6 @@
 }
 
 body {
-  font-family: "Seagull";
+  font-family: "font_Seagull";
   height: 100%;
 }
