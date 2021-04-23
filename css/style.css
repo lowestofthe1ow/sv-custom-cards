@@ -34,24 +34,24 @@
 }
 
 #generateButton {
- background-color: #20B2AA; /* Green */
- border: none;
- color: white;
- padding: 16px 20px;
- text-align: center;
- text-decoration: none;
- font-family: "Roboto";
- font-size: 16px;
- transition: all 0.2s;
- border-radius: 4px;
+  background-color: #20B2AA; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Roboto";
+  font-size: 16px;
+  transition: all 0.2s;
+  border-radius: 4px;
 }
 
-#generateButton:hover, .boldButton:hover, #uploadArt:hover {
- background-color: #008080;
+#generateButton:hover, #uploadArt:hover {
+  background-color: #008080;
 }
 
-#generateButton:disabled, #form_art:disabled + #uploadArt {
- background-color: #888888;
+.boldButton:hover {
+  background-color: #B8860B;
 }
 
 select {
@@ -115,19 +115,19 @@ textarea:focus {
 }
 
 input[type="file"] {
-    display: none;
+  display: none;
 }
 
 .boldButton, #uploadArt {
- border: none;
- color: white;
- padding: 8px 10px;
- text-align: center;
- text-decoration: none;
- font-family: "font_Roboto";
- font-size: 16px;
- transition: all 0.2s;
- border-radius: 4px;
+  border: none;
+  color: white;
+  padding: 8px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "font_Roboto";
+  font-size: 16px;
+  transition: all 0.2s;
+  border-radius: 4px;
 }
 
 #uploadArt {
@@ -140,4 +140,8 @@ input[type="file"] {
 
 body {
   height: 100%;
+}
+
+#generateButton:disabled, .boldButton:disabled, #form_art:disabled + #uploadArt {
+  background-color: #888888;
 }

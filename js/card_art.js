@@ -342,7 +342,7 @@ window.onload = function() {
       stroke: "rgba(153, 255, 102, 0.2)",
       paintFirst: "stroke",
       strokeWidth: 7,
-      fontWeight: 600,
+      fontWeight: 1000,
       shadow: {
         color: "rgba(0, 0, 0, 1)",
         blur: 10,
@@ -359,7 +359,7 @@ window.onload = function() {
         fontSize: 102,
         textAlign: "center",
         fill: "#FFFFFF",
-        fontWeight: "bold",
+        fontWeight: 1000,
         shadow: {
           color: "rgba(0, 0, 50, 1)",
           offsetY: 4
@@ -374,7 +374,7 @@ window.onload = function() {
         fontSize: 102,
         textAlign: "center",
         fill: "#FFFFFF",
-        fontWeight: "bold",
+        fontWeight: 1000,
         shadow: {
           color: "rgba(50, 0, 0, 1)",
           offsetY: 4
@@ -402,8 +402,15 @@ window.onload = function() {
     canvas.add(new fabric.Text("Trait:", {top: 128, left: 1419, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#CACAB2"}));
     canvas.add(new fabric.Text(cardClassName, {top: 75, left: 1553, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"}));
     canvas.add(new fabric.Text(trait, {top: 128, left: 1553, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"}));
-    canvas.add(new fabric.Text("Illustrator:", {top: 987, left: 100, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#CACAB2"}));
-    canvas.add(new fabric.Text(illus, {top: 987, left: 281, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"}));
+
+    // Draw "Illustrator:" text
+    var illusString = "Illustrator: " + illus
+    var illusText = new fabric.Text(illusString, {
+      top: 987, left: 100, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"
+    })
+    illusText.setSelectionStyles({fill: "#CACAB2"}, 0, 12);
+    canvas.add(illusText);
+
     // Draw "This is a token card" text
     if (token == true) {
       canvas.add(new fabric.Text("*This is a token card.", {top: 1020, left: 100, charSpacing: 20, fontFamily: "font_Seagull", fontSize: 36, fill: "#FFFDEE"}));
