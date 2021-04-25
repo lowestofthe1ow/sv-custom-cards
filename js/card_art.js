@@ -118,7 +118,7 @@ window.onload = function() {
     for (var i = 0; i < document.querySelectorAll(".cardData").length; i++) {
       document.querySelectorAll(".cardData")[i].disabled = true;
     }
-    generateButton.innerHTML = "Generating...";
+    generateButton.innerHTML = "Loading...";
 
     // Set frame image source
     var srcFrame = "img/generator/" + cardTypes[
