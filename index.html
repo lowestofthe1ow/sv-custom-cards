@@ -21,7 +21,7 @@
     <script type="text/javascript" src="js/card_art.js"></script>
     <br />
     <h1 style="font-family:'font_Roboto'; line-height:24px; text-align: center;">Shadowverse Custom Card Generator</h1>
-    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center;">V1.3.1. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
+    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center;">V1.4.0. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
     <div style="opacity:0;">
       <span style="font-family:font_Seagull"></span>
       <span style="font-family:font_Stargate"></span>
@@ -35,7 +35,7 @@
       <br />
       <div style="padding: 10px;">
         <form>
-          <button id="generateButton" type="button" class="cardData">Loading...</button>
+          <button id="generateButton" type="button" class="cardData">Generate card</button>
           <input type="file" accept="image/png, image/jpeg" class="cardData" id="form_art"/>
           <label for="form_art" id="uploadArt">
             Upload Image
@@ -117,6 +117,9 @@
           <br />
           <input type="checkbox" class="cardData" id="form_blackBG"/>
           <label for="form_blackBG">Use black background</label>
+          <br />
+          <input type="checkbox" class="cardData" id="form_autoStretch"/>
+          <label for="form_autoStretch">Auto-stretch image instead of crop</label>
           <br />
         </form>
       </div>
