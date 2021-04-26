@@ -91,13 +91,13 @@ window.onload = function() {
   };
 
   // Crop whenever image is uploaded
-  artUpload.onchange = function() {
+  artUpload.addEventListener("change", function() {
     uploadFileName.innerHTML = artUpload.files[0].name;
     croppedImage = URL.createObjectURL(artUpload.files[0]);
     cropper.bind({
         url: croppedImage,
     });
-  };
+  });
 
   // Change visible settings for automatically stretching image instead of cropping
   autoStretch.onchange = function() {
@@ -106,7 +106,7 @@ window.onload = function() {
     } else {
       document.getElementById("ui_crop").style.display = "block";
       if (croppedImage.length != 0) {
-        artUpload.onchange(); // Re-bind uploaded image to cropper
+        cropper.bind(); // Re-bind uploaded image to cropper
       };
     };
   };
