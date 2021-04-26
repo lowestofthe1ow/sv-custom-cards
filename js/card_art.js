@@ -6,6 +6,7 @@ function formatText(areaText) {
   var beforeText = text.substring(0, area.selectionStart);
   var afterText = text.substring(area.selectionEnd, text.length);
   area.value = beforeText + "[b]" + selectedText + "[/b]" + afterText;
+  area.focus();
 }
 
 // Preload array of images
@@ -57,6 +58,7 @@ window.onload = function() {
   const useBlackBG = document.getElementById("form_blackBG");
   const autoStretch = document.getElementById("form_autoStretch");
   const artUpload = document.getElementById("form_art");
+  const uploadFileName = document.getElementById("uploadFileName");
 
   // Const arrays for lookup
   const cardClasses = ["Neutral", "Forestcraft", "Swordcraft", "Runecraft", "Dragoncraft", "Shadowcraft", "Bloodcraft", "Havencraft", "Portalcraft"];
@@ -90,6 +92,7 @@ window.onload = function() {
 
   // Crop whenever image is uploaded
   artUpload.onchange = function() {
+    uploadFileName.innerHTML = artUpload.files[0].name;
     croppedImage = URL.createObjectURL(artUpload.files[0]);
     cropper.bind({
         url: croppedImage,
@@ -271,11 +274,13 @@ window.onload = function() {
     };
 
     // Number of text lines
+    var lines1;
+    var lines2;
     if (cardType.value == 0) {
       var getLinesResult1 = getLines(cardText1.value, 30);
       var getLinesResult2 = getLines(cardText2.value, 30);
-      var lines1 = getLinesResult1 < 5 ? 5 : getLinesResult1;
-      var lines2 = getLinesResult2 < (10 - lines1) ? 10 - lines1 : getLinesResult2;
+      lines1 = getLinesResult1 < 5 ? 5 : getLinesResult1;
+      lines2 = getLinesResult2 < (10 - lines1) ? 10 - lines1 : getLinesResult2;
       if (lines2 > 5) {
         if (getLinesResult1 < 10 - lines2) {
           lines1 = 10 - lines2;
@@ -285,8 +290,8 @@ window.onload = function() {
       };
     } else {
       var getLinesResult = getLines(cardText1.value, 36);
-      var lines1 = getLinesResult < 6 ? 6 : getLinesResult;
-      var lines2 = 9 - lines1;
+      lines1 = getLinesResult < 6 ? 6 : getLinesResult;
+      lines2 = 9 - lines1;
       if (lines2 < 0) {
         lines2 = 0;
       };

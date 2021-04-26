@@ -21,7 +21,7 @@
     <script type="text/javascript" src="js/card_art.js"></script>
     <br />
     <h1 style="font-family:'font_Roboto'; line-height:24px; text-align: center;">Shadowverse Custom Card Generator</h1>
-    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center;">V1.4.0. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
+    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center;">V1.4.1. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
     <div style="opacity:0;">
       <span style="font-family:font_Seagull"></span>
       <span style="font-family:font_Stargate"></span>
@@ -33,14 +33,15 @@
     <div id="mainFlexContainer">
       <div id="ui_crop" style="padding: 10px;"></div>
       <br />
-      <div style="padding: 10px;">
+      <div style="padding: 10px; max-width:400px">
         <form>
           <button id="generateButton" type="button" class="cardData">Generate card</button>
           <input type="file" accept="image/png, image/jpeg" class="cardData" id="form_art"/>
           <label for="form_art" id="uploadArt">
             Upload Image
           </label>
-          <br /><br />
+          <br />
+          <p id="uploadFileName" style="line-height:16px; word-wrap: break-word;">No file selected.</p>
           <label for="form_name">Name:</label><br />
           <input type="text" class="cardData" id="form_name"/>
           <br />
@@ -80,13 +81,13 @@
           <br />
           <div id="div_stats">
             <br />
-            <p style="line-height:0px;">Unevolved</p>
+            <p style="line-height:16px;">Unevolved</p>
             <label for="form_att1">Attack:</label>
             <input type="number" class="cardData" id="form_att1"/>
             <label for="form_att1">Defense:</label>
             <input type="number" class="cardData" id="form_def1"/>
             <br />
-            <p style="line-height:0px;">Evolved</p>
+            <p style="line-height:16px;">Evolved</p>
             <label for="form_att1">Attack:</label>
             <input type="number" class="cardData" id="form_att2"/>
             <label for="form_att1">Defense:</label>
@@ -95,7 +96,7 @@
           <br />
         </form>
       </div>
-      <div style="padding: 10px;">
+      <div style="padding: 10px; max-width:400px">
         <form>
           <button type="button" onclick="formatText('form_text1')" class="cardData boldButton">Bold</button>
           <label for="form_text1" id="label_form_text1">Unevolved Text:</label>
