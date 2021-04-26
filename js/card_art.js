@@ -16,7 +16,7 @@ function preloadImages(srcArray, imgArray, generateButton, callback) {
     var img = new Image();
     img.addEventListener("load", function() {
       remaining -= 1;
-      generateButton.innerHTML = "Loading (" + String((Math.round(100*(srcArray.length - remaining)/srcArray.length))) + "%)...";
+      generateButton.innerHTML = "Loading (" + String(srcArray.length - remaining) + " / " + String(srcArray.length) + ")..."
       if (remaining <= 0) {
         callback();
       };
