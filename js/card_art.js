@@ -476,10 +476,10 @@ window.onload = function() {
       var fabricText2 = new fabric.Textbox(parseResults2[0], {...styleFollowerText, ...{top: 474+(40*lines1)}});
       // Format text to bold, depending on parse results
       for (var i = 0; i < parseResults1[1].length; i++) {
-        fabricText1.setSelectionStyles({fontWeight: 1000}, parseResults1[1][i], parseResults1[2][i]);
+        fabricText1.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults1[1][i], parseResults1[2][i]);
       }
       for (var i = 0; i < parseResults2[1].length; i++) {
-        fabricText2.setSelectionStyles({fontWeight: 1000}, parseResults2[1][i], parseResults2[2][i]);
+        fabricText2.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults2[1][i], parseResults2[2][i]);
       }
 
       // Draw unevolved attack and defense
@@ -524,7 +524,7 @@ window.onload = function() {
       });
       // Format text to bold, depending on parse results
       for (var i = 0; i < parseResults[1].length; i++) {
-        fabricText.setSelectionStyles({fontWeight: 1000}, parseResults[1][i], parseResults[2][i]);
+        fabricText.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults[1][i], parseResults[2][i]);
       }
 
       // Add to canvas

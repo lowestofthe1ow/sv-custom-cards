@@ -4,6 +4,11 @@
 }
 
 @font-face {
+  font-family: "font_SeagullBold";
+  src: url(font/seagb.ttf);
+}
+
+@font-face {
   font-family: "font_Stargate";
   src: url(font/stargate.ttf);
 }
