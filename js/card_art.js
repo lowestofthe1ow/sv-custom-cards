@@ -59,6 +59,7 @@ window.onload = function() {
   const autoStretch = document.getElementById("form_autoStretch");
   const artUpload = document.getElementById("form_art");
   const uploadFileName = document.getElementById("uploadFileName");
+  const showWordCount = document.getElementById("form_wordCount");
 
   // Const arrays for lookup
   const cardClasses = ["Neutral", "Forestcraft", "Swordcraft", "Runecraft", "Dragoncraft", "Shadowcraft", "Bloodcraft", "Havencraft", "Portalcraft"];
@@ -400,8 +401,8 @@ window.onload = function() {
     var lines1;
     var lines2;
 
-    var parseResults = "";
-    var parseResults2 = "";
+    var parseResults = [""];
+    var parseResults2 = [""];
 
     // Follower text box and text
     if (cardType.value == 0) {
@@ -426,13 +427,8 @@ window.onload = function() {
         }
       };
 
-      console.log(fabricText1.styles);
       fabricText1.top = 357;
       fabricText2.top = 474+(40*lines1);
-
-      //{...styleFollowerText, ...{top: 357}}
-      //{...styleFollowerText, ...{top: 474+(40*lines1)}}
-
 
       // Format text to bold, depending on parse results
       for (var i = 0; i < parseResults[1].length; i++) {
@@ -564,6 +560,25 @@ window.onload = function() {
         });
       };
     };
+
+    // Draw word count
+    if (showWordCount.checked == true) {
+      var wordCount1 = parseResults[0].trim() == "" ? 0 : parseResults[0].trim().split(/\s+/).length;
+      var wordCount2 = parseResults2[0].trim() == "" ? 0 : parseResults2[0].trim().split(/\s+/).length;
+      var wordCountTotal = wordCount1 + wordCount2;
+      var strWordCount = "Word count: " + String(wordCountTotal);
+
+      var fabricWordCount = new fabric.Text(strWordCount, {
+        top: 90,
+        left: 133,
+        charSpacing: 20,
+        fontFamily: "font_Seagull",
+        fontSize: 24,
+        fill: "#FFFDEE"
+      })
+      fabricWordCount.setSelectionStyles({fill: "#CACAB2"}, 0, 11);
+      canvas.add(fabricWordCount);
+    }
 
     // Download image
     download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
