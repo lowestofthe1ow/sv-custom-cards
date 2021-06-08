@@ -273,35 +273,6 @@ window.onload = function() {
       finalIllus = "-";
     };
 
-    // Set canvas height
-    canvas.setHeight(getHeight(lines1 + lines2, cardType.value));
-
-    // Set background image
-    if (useBlackBG.checked == false) {
-      // Create new Fabric image object for background
-      var imageBG = new fabric.Image(loadedImages[loadedImages.length - 1], {opacity: 0.4});
-      // Factor by which to scale the background image
-      var scaleFactor = canvas.height < imageBG.height ? canvas.width / imageBG.width : canvas.height / imageBG.height;
-      // Render the background image
-      if (lines1+lines2 <= 12) {
-        canvas.setBackgroundImage(imageBG, canvas.renderAll.bind(canvas), {
-          originX: "center",
-          originY: "center",
-          top: canvas.height / 2,
-          left: canvas.width / 2
-        });
-      } else {
-        canvas.setBackgroundImage(imageBG, canvas.renderAll.bind(canvas), {
-          scaleX: scaleFactor,
-          scaleY: scaleFactor,
-          originX: "center",
-          originY: "center",
-          top: canvas.height / 2,
-          left: canvas.width / 2
-        });
-      };
-    };
-
     // Draw initial layout
     canvas.add(new fabric.Text(cardName.value, {
       top: 113,
@@ -429,25 +400,18 @@ window.onload = function() {
     var lines1;
     var lines2;
 
+    var parseResults = "";
+    var parseResults2 = "";
+
     // Follower text box and text
     if (cardType.value == 0) {
       // Parse text
-      var parseResults1 = parseBB(cardText1.value);
-      var parseResults2 = parseBB(cardText2.value);
+      parseResults = parseBB(cardText1.value);
+      parseResults2 = parseBB(cardText2.value);
 
       // Draw follower text
-      var fabricText1 = new fabric.Textbox(parseResults1[0], {...styleFollowerText, ...{top: 357}});
-      var fabricText2 = new fabric.Textbox(parseResults2[0], {...styleFollowerText, ...{top: 474+(40*lines1)}});
-      // Format text to bold, depending on parse results
-      for (var i = 0; i < parseResults1[1].length; i++) {
-        fabricText1.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults1[1][i], parseResults1[2][i]);
-      }
-      for (var i = 0; i < parseResults2[1].length; i++) {
-        fabricText2.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults2[1][i], parseResults2[2][i]);
-      }
-
-      // Render canvas
-      canvas.renderAll();
+      var fabricText1 = new fabric.Textbox(parseResults[0], styleFollowerText);
+      var fabricText2 = new fabric.Textbox(parseResults2[0], styleFollowerText);
 
       // Get number of lines
       var getLinesResult1 = fabricText1._textLines.length;
@@ -461,6 +425,40 @@ window.onload = function() {
           lines1 = getLinesResult1;
         }
       };
+
+      console.log(fabricText1.styles);
+      fabricText1.top = 357;
+      fabricText2.top = 474+(40*lines1);
+
+      //{...styleFollowerText, ...{top: 357}}
+      //{...styleFollowerText, ...{top: 474+(40*lines1)}}
+
+
+      // Format text to bold, depending on parse results
+      for (var i = 0; i < parseResults[1].length; i++) {
+        fabricText1.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults[1][i], parseResults[2][i]);
+      }
+      for (var i = 0; i < parseResults2[1].length; i++) {
+        fabricText2.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults2[1][i], parseResults2[2][i]);
+      }
+
+      // Render canvas
+      canvas.renderAll();
+
+
+      // Get number of lines
+      var getLinesResult1 = fabricText1._textLines.length;
+      var getLinesResult2 = fabricText2._textLines.length;
+      lines1 = getLinesResult1 < 5 ? 5 : getLinesResult1;
+      lines2 = getLinesResult2 < (10 - lines1) ? 10 - lines1 : getLinesResult2;
+      if (lines2 > 5) {
+        if (getLinesResult1 < 10 - lines2) {
+          lines1 = 10 - lines2;
+        } else {
+          lines1 = getLinesResult1;
+        }
+      };
+
 
       // Draw textbox spaces
       for (var i = 0; i < lines1-1; i++) {
@@ -493,7 +491,7 @@ window.onload = function() {
     // Spell or Amulet text box and text
     else {
       // Parse text
-      var parseResults = parseBB(cardText1.value);
+      parseResults = parseBB(cardText1.value);
 
       // Draw spell or amulet text
       var fabricText = new fabric.Textbox(parseResults[0], {
@@ -537,6 +535,35 @@ window.onload = function() {
       // Add to canvas
       canvas.add(fabricText);
     }
+
+    // Set canvas height
+    canvas.setHeight(getHeight(lines1 + lines2, cardType.value));
+
+    // Set background image
+    if (useBlackBG.checked == false) {
+      // Create new Fabric image object for background
+      var imageBG = new fabric.Image(loadedImages[loadedImages.length - 1], {opacity: 0.4});
+      // Factor by which to scale the background image
+      var scaleFactor = canvas.height < imageBG.height ? canvas.width / imageBG.width : canvas.height / imageBG.height;
+      // Render the background image
+      if (lines1+lines2 <= 12) {
+        canvas.setBackgroundImage(imageBG, canvas.renderAll.bind(canvas), {
+          originX: "center",
+          originY: "center",
+          top: canvas.height / 2,
+          left: canvas.width / 2
+        });
+      } else {
+        canvas.setBackgroundImage(imageBG, canvas.renderAll.bind(canvas), {
+          scaleX: scaleFactor,
+          scaleY: scaleFactor,
+          originX: "center",
+          originY: "center",
+          top: canvas.height / 2,
+          left: canvas.width / 2
+        });
+      };
+    };
 
     // Download image
     download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
