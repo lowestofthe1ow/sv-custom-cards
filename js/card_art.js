@@ -60,13 +60,34 @@ window.onload = function() {
   const artUpload = document.getElementById("form_art");
   const uploadFileName = document.getElementById("uploadFileName");
   const showWordCount = document.getElementById("form_wordCount");
+  const themeButton = document.getElementById("themeButton")
 
   // Const arrays for lookup
   const cardClasses = ["Neutral", "Forestcraft", "Swordcraft", "Runecraft", "Dragoncraft", "Shadowcraft", "Bloodcraft", "Havencraft", "Portalcraft"];
   const cardTypes = ["follower", "amulet", "spell"];
   const cardRarities = ["legendary", "gold", "silver", "bronze"];
 
+  // Clear artUpload
   artUpload.value = null;
+
+  // Event listener for dark mode toggle
+  var theme = "dark";
+  if (localStorage.getItem("theme") == "light") {
+    document.body.classList.remove("darkmode");
+    theme = "light";
+    themeButton.innerHTML = "Switch to dark mode";
+  };
+  themeButton.addEventListener("click", function() {
+    document.body.classList.toggle("darkmode");
+    if (document.body.classList.contains("darkmode") == true) {
+      theme = "dark";
+      themeButton.innerHTML = "Switch to light mode";
+    } else {
+      theme = "light";
+      themeButton.innerHTML = "Switch to dark mode";
+    }
+    localStorage.setItem("theme", theme);
+  });
 
   // Initialize cropper
   var croppedArt = new Image();
