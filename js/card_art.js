@@ -459,9 +459,12 @@ window.onload = function() {
         fabricText2.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults2[1][i], parseResults2[2][i]);
       }
 
+      // Add to canvas
+      canvas.add(fabricText1);
+      canvas.add(fabricText2);
+
       // Render canvas
       canvas.renderAll();
-
 
       // Get number of lines
       var getLinesResult1 = fabricText1._textLines.length;
@@ -475,7 +478,6 @@ window.onload = function() {
           lines1 = getLinesResult1;
         }
       };
-
 
       // Draw textbox spaces
       for (var i = 0; i < lines1-1; i++) {
@@ -500,9 +502,9 @@ window.onload = function() {
       canvas.add(new fabric.Text(cardStats[1].value, {...styleTextboxStats, ...{top: 398+(40*lines1), left: 1535}}));
       canvas.add(new fabric.Text(cardStats[3].value, {...styleTextboxStats, ...{top: 398+(40*lines1), left: 1677}}));
 
-      // Add to canvas
-      canvas.add(fabricText1);
-      canvas.add(fabricText2);
+      // Bring text to front
+      canvas.bringToFront(fabricText1);
+      canvas.bringToFront(fabricText2);
     }
 
     // Spell or Amulet text box and text
@@ -524,6 +526,8 @@ window.onload = function() {
       for (var i = 0; i < parseResults[1].length; i++) {
         fabricText.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults[1][i], parseResults[2][i]);
       }
+      // Add to canvas
+      canvas.add(fabricText);
 
       // Render canvas
       canvas.renderAll();
@@ -549,8 +553,8 @@ window.onload = function() {
       // Draw textbox closing
       canvas.add(new fabric.Image(loadedImages[6], {top: currentDrawPosition, left: 753}));
 
-      // Add to canvas
-      canvas.add(fabricText);
+      // Bring text to front
+      canvas.bringToFront(fabricText);
     }
 
     // Set canvas height
