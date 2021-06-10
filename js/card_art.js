@@ -605,6 +605,9 @@ window.onload = function() {
       canvas.add(fabricWordCount);
     }
 
+    // Render canvas
+    canvas.renderAll();
+
     // Download image
     download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
   });
