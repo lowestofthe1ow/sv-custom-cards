@@ -435,22 +435,6 @@ window.onload = function() {
       var fabricText1 = new fabric.Textbox(parseResults[0], styleFollowerText);
       var fabricText2 = new fabric.Textbox(parseResults2[0], styleFollowerText);
 
-      // Get number of lines
-      var getLinesResult1 = fabricText1._textLines.length;
-      var getLinesResult2 = fabricText2._textLines.length;
-      lines1 = getLinesResult1 < 5 ? 5 : getLinesResult1;
-      lines2 = getLinesResult2 < (10 - lines1) ? 10 - lines1 : getLinesResult2;
-      if (lines2 > 5) {
-        if (getLinesResult1 < 10 - lines2) {
-          lines1 = 10 - lines2;
-        } else {
-          lines1 = getLinesResult1;
-        }
-      };
-
-      fabricText1.top = 357;
-      fabricText2.top = 474+(40*lines1);
-
       // Format text to bold, depending on parse results
       for (var i = 0; i < parseResults[1].length; i++) {
         fabricText1.setSelectionStyles({fontFamily: "font_SeagullBold"}, parseResults[1][i], parseResults[2][i]);
@@ -478,6 +462,9 @@ window.onload = function() {
           lines1 = getLinesResult1;
         }
       };
+
+      fabricText1.top = 357;
+      fabricText2.top = 474+(40*lines1);
 
       // Draw textbox spaces
       for (var i = 0; i < lines1-1; i++) {
