@@ -60,7 +60,8 @@ window.onload = function() {
   const artUpload = document.getElementById("form_art");
   const uploadFileName = document.getElementById("uploadFileName");
   const showWordCount = document.getElementById("form_wordCount");
-  const themeButton = document.getElementById("themeButton")
+  const themeButton = document.getElementById("themeButton");
+  const cardOnly = document.getElementById("form_cardOnly");
 
   // Const arrays for lookup
   const cardClasses = ["Neutral", "Forestcraft", "Swordcraft", "Runecraft", "Dragoncraft", "Shadowcraft", "Bloodcraft", "Havencraft", "Portalcraft"];
@@ -330,8 +331,8 @@ window.onload = function() {
     }
 
     // Draw card frame
-    canvas.add(new fabric.Image(loadedImages[0], {top: 221, left: 136, scaleX: 1.075, scaleY: 1.075}));
-    canvas.add(new fabric.Image(loadedImages[1], {
+    var fabricFrame = new fabric.Image(loadedImages[0], {top: 221, left: 136, scaleX: 1.075, scaleY: 1.075});
+    var fabricGem = new fabric.Image(loadedImages[1], {
       top: cardType.value == 2 ? 878 : 879,
       left: 413,
       scaleX: 1.1,
@@ -340,7 +341,9 @@ window.onload = function() {
         color: "rgba(0, 0, 0, 1)",
         blur: 3,
       },
-    }));
+    });
+    canvas.add(fabricFrame);
+    canvas.add(fabricGem);
 
     // Draw card art
     var fabricCroppedArt = new fabric.Image(croppedArt, {top: 342, left: 203});
@@ -392,6 +395,9 @@ window.onload = function() {
     });
     canvas.add(labelCost);
 
+    // Array of objects for Fabric group
+    var arrayGroup = [fabricCroppedArt, fabricFrame, fabricGem, labelName, labelCost];
+
     // Draw follower stats
     if (cardType.value == 0) {
       var labelAtt = new fabric.Textbox(cardStats[0].value, {...styleCardStats, ...{
@@ -412,7 +418,13 @@ window.onload = function() {
       }});
       canvas.add(labelAtt);
       canvas.add(labelDef);
+
+      // Add attack and defense to group array
+      arrayGroup.push(labelAtt, labelDef);
     }
+
+    // Fabric group for saving card image separately
+    var fabricGroup = new fabric.Group(arrayGroup);
 
     // Draw text box
     var currentDrawPosition;
@@ -596,7 +608,11 @@ window.onload = function() {
     canvas.renderAll();
 
     // Download image
-    download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
+    if (cardOnly.checked == false) {
+      download(canvas.toDataURL('image/png', 1.0), fileName, "image/png");
+    } else {
+      download(fabricGroup.toDataURL('image/png', 1.0), fileName + "-CardOnly", "image/png");
+    };
   });
 
   // Get canvas height
