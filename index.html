@@ -20,8 +20,8 @@
     <script type="text/javascript" src="js/download.min.js"></script>
     <script type="text/javascript" src="js/card_art.js"></script>
     <br />
-    <h1 style="font-family:'font_Roboto'; line-height:24px; text-align: center;">Shadowverse Custom Card Generator</h1>
-    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center;">V1.6.0. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will explode.</p>
+    <h1 style="font-family:'Comic Sans MS'; line-height:24px; text-align: center;">Sh<span style="color:blue">adowver</span>se Cus<span style="color:blue">tom Card Gen</span>erator</h1>
+    <p style="font-family:'Comic Sans MS'; line-height:16px; text-align: center;">V99.99.99. May not work on all browsers, probably works in Chrome/Firefox. Enable JavaScript or this website will become a <span style="color:red">Reddit thread.</span></p>
     <div style="opacity:0;">
       <span style="font-family:font_Seagull"></span>
       <span style="font-family:font_SeagullBold"></span>
@@ -36,63 +36,63 @@
       <br />
       <div style="padding: 10px; max-width:400px">
         <form>
-          <button id="generateButton" type="button" class="cardData">Generate card</button>
+          <button id="generateButton" type="button" class="cardData">Sacrifice to KMR</button>
           <input type="file" accept="image/png, image/jpeg" class="cardData" id="form_art"/>
           <label for="form_art" id="uploadArt">
-            Upload Image
+            Borrow from Pixiv
           </label>
           <br />
           <p id="uploadFileName" style="line-height:16px; word-wrap: break-word;">No file selected.</p>
           <label for="form_name">Name:</label><br />
-          <input type="text" class="cardData" id="form_name"/>
+          <input type="text" class="cardData" id="form_name" placeholder="Kimura Yuito"/>
           <br />
           <label for="form_trait">Trait:</label><br />
-          <input type="text" class="cardData" id="form_trait"/>
+          <input type="text" class="cardData" id="form_trait" placeholder="Mistake"/>
           <br />
           <label for="form_class">Class:</label><br />
           <select class="cardData" id="form_class">
-            <option value=0>Neutral</option>
-            <option value=1>Forestcraft</option>
-            <option value=2>Swordcraft</option>
+            <option value=0>The boring one</option>
+            <option value=1>The best one</option>
+            <option value=2>Youmustdie.wav</option>
             <option value=3>Runecraft</option>
-            <option value=4>Dragoncraft</option>
-            <option value=5>Shadowcraft</option>
-            <option value=6>Bloodcraft</option>
-            <option value=7>Havencraft</option>
-            <option value=8>Portalcraft</option>
+            <option value=4>Rowen</option>
+            <option value=5>Kirisaku</option>
+            <option value=6>Mono best girl</option>
+            <option value=7>Goldship</option>
+            <option value=8>Portal</option>
           </select>
           <br />
           <label for="form_type">Type:</label><br />
           <select class="cardData" id="form_type" value=0>
             <option value=0>Follower</option>
-            <option value=1>Amulet</option>
-            <option value=2>Spell</option>
+            <option value=1>Follower Lite</option>
+            <option value=2>Spellboost</option>
           </select>
           <br />
-          <label for="form_rarity">Rarity:</label><br />
+          <label for="form_rarity">Gacha:</label><br />
           <select class="cardData" id="form_rarity" value=0>
-            <option value=0>Legendary</option>
-            <option value=1>Gold</option>
-            <option value=2>Silver</option>
-            <option value=3>Bronze</option>
+            <option value=0>UR</option>
+            <option value=1>SSR</option>
+            <option value=2>SR</option>
+            <option value=3>Poverty</option>
           </select>
           <br />
           <label for="form_cost">Cost:</label>
-          <input type="number" class="cardData" id="form_cost" />
+          <input type="number" class="cardData" id="form_cost" placeholder="0"/>
           <br />
           <div id="div_stats">
             <br />
             <p style="line-height:16px;">Unevolved</p>
             <label for="form_att1">Attack:</label>
-            <input type="number" class="cardData" id="form_att1"/>
-            <label for="form_att1">Defense:</label>
-            <input type="number" class="cardData" id="form_def1"/>
+            <input type="number" class="cardData" id="form_att1" placeholder="999999"/>
+            <label for="form_att1">Irrelevant</label>
+            <input type="number" class="cardData" id="form_def1" placeholder="999999"/>
             <br />
             <p style="line-height:16px;">Evolved</p>
-            <label for="form_att1">Attack:</label>
-            <input type="number" class="cardData" id="form_att2"/>
-            <label for="form_att1">Defense:</label>
-            <input type="number" class="cardData" id="form_def2"/>
+            <label for="form_att1">Attack</label>
+            <input type="number" class="cardData" id="form_att2" placeholder="999999"/>
+            <label for="form_att1">Irrelevant</label>
+            <input type="number" class="cardData" id="form_def2" placeholder="999999"/>
           </div>
           <br />
         </form>
@@ -102,13 +102,13 @@
           <button type="button" onclick="formatText('form_text1')" class="cardData boldButton">Bold</button>
           <label for="form_text1" id="label_form_text1">Unevolved Text:</label>
           <br />
-          <textarea class="cardData" id="form_text1" rows="12" cols="50"></textarea>
+          <textarea class="cardData" id="form_text1" rows="12" cols="50" placeholder="Storm."></textarea>
           <br />
           <div id="div_text2">
             <button type="button" onclick="formatText('form_text2')" class="cardData boldButton">Bold</button>
             <label for="form_text2" id="label_form_text2">Evolved Text:</label>
             <br />
-            <textarea class="cardData" id="form_text2" rows="12" cols="50"></textarea>
+            <textarea class="cardData" id="form_text2" rows="12" cols="50" placeholder="[b]Evolve[/b]: Win the match."></textarea>
           </div>
           <br />
           <label for="form_illus">Illustrator:</label><br />
@@ -135,11 +135,11 @@
     <canvas id="cardTemplate" width="1920" height="1120" style="display:none"></canvas>
     <br />
     <!--<hr style="width:75%" /><br />-->
-    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center">Made with love and the souls of the innocent. <a class="textLink" href="https://github.com/lowestofthe1ow/sv-custom-cards/issues">Feedback</a></p>
+    <p style="font-family:'Comic Sans MS'; line-height:16px; text-align: center">Made with love and sacrifices to our lord and savior Kimura Yuito. <a class="textLink" href="https://github.com/lowestofthe1ow/sv-custom-cards/issues">Feedback</a></p>
     <div style="width: 100%; text-align: center">
       <button id="themeButton">Switch to light mode</button>
     </div>
-    <p style="font-family:'font_Roboto'; line-height:16px; text-align: center">Croppie by Foliotek. <a class="textLink" href="js/LICENSE">License</a></p>
+    <p style="font-family:'Comic Sans MS'; line-height:16px; text-align: center">Croppie by Foliotek. <a class="textLink" href="js/LICENSE">License</a></p>
     <br />
   </body>
 </html>
