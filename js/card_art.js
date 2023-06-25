@@ -543,7 +543,6 @@ window.onload = function() {
         };
       } else {
         // Draw textbox spaces
-        canvas.add(new fabric.Image(loadedImages[4], {top: currentDrawPosition, left: 753}));
         currentDrawPosition += 40;
         for (var i = 0; i < lines2 + 3; i++) {
           canvas.add(new fabric.Image(loadedImages[7], {top: currentDrawPosition, left: 753}));
