@@ -445,7 +445,7 @@ window.onload = function() {
 
     // Draw follower stats
     if (cardType.value == 0) {
-      var labelAtt = new fabric.Textbox(cardStats[0].value, {...styleCardStats, ...{
+      var labelAtt = new fabric.Textbox(cardStats[hideUnevolved.checked == true ? 1 : 0].value, {...styleCardStats, ...{
         left: 141,
         top: 830,
         shadow: {
@@ -453,7 +453,7 @@ window.onload = function() {
           offsetY: 4
         }
       }});
-      var labelDef = new fabric.Textbox(cardStats[2].value, {...styleCardStats, ...{
+      var labelDef = new fabric.Textbox(cardStats[hideUnevolved.checked == true ? 3 : 2].value, {...styleCardStats, ...{
         left: 575,
         top: 830,
         shadow: {
