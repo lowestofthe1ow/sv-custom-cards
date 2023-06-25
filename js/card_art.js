@@ -62,6 +62,8 @@ window.onload = function() {
   const showWordCount = document.getElementById("form_wordCount");
   const themeButton = document.getElementById("themeButton");
   const cardOnly = document.getElementById("form_cardOnly");
+  const hideUnevolved = document.getElementById("form_hideUnevolved");
+  const hideEvolved = document.getElementById("form_hideEvolved");
 
   // Const arrays for lookup
   const cardClasses = ["Neutral", "Forestcraft", "Swordcraft", "Runecraft", "Dragoncraft", "Shadowcraft", "Bloodcraft", "Havencraft", "Portalcraft"];
@@ -100,16 +102,49 @@ window.onload = function() {
     mouseWheelZoom: false
   });
 
+  // Disable text boxes when hiding evolved or unevolved text
+  hideUnevolved.onchange = function() {
+    if (hideEvolved.checked == true && hideUnevolved.checked == true) {
+      hideEvolved.click();
+    }
+    if (hideUnevolved.checked == false) {
+      document.getElementById("form_text1").disabled = false;
+    }
+    else {
+      document.getElementById("form_text1").disabled = true;
+    }
+  }
+
+  hideEvolved.onchange = function() {
+    if (hideUnevolved.checked == true && hideEvolved.checked == true) {
+      hideUnevolved.click();
+    }
+    if (hideEvolved.checked == false) {
+      document.getElementById("form_text2").disabled = false;
+    }
+    else {
+      document.getElementById("form_text2").disabled = true;
+    }
+  }
+
   // Change visible settings depending on if card is follower, amulet, and spell
   cardType.onchange = function() {
     if (cardType.value != 0) {
       document.getElementById("div_text2").style.display = "none";
       document.getElementById("div_stats").style.display = "none";
+      document.getElementById("hideEvolved").style.display = "none";
+      document.getElementById("hideUnevolved").style.display = "none";
       document.getElementById("label_form_text1").innerHTML = "Text:";
+      document.getElementById("form_text1").disabled = false;
+      document.getElementById("form_text2").disabled = false;
     } else {
       document.getElementById("div_text2").style.display = "block";
       document.getElementById("div_stats").style.display = "block";
+      document.getElementById("hideEvolved").style.display = "inline";
+      document.getElementById("hideUnevolved").style.display = "inline";
       document.getElementById("label_form_text1").innerHTML = "Unevolved Text:";
+      hideEvolved.onchange();
+      hideUnevolved.onchange();
     };
   };
 
@@ -135,6 +170,8 @@ window.onload = function() {
   };
 
   // Update visible settings on window load
+  hideUnevolved.onchange();
+  hideEvolved.onchange();
   cardType.onchange();
   autoStretch.onchange();
 
@@ -165,6 +202,11 @@ window.onload = function() {
       cardType.value
     ] + ".png";
 
+    // Replace textbox header if unevolved text is hidden
+    if (cardType.value == 0 && hideUnevolved.checked == true) {
+      var srcTxtHeader = "img/generator/layout/header_evolved_follower.png"
+    }
+
     // Reset loadedImages array
     loadedImages = [];
 
@@ -181,7 +223,8 @@ window.onload = function() {
       loadQueue.push(
         "img/generator/layout/follower_1.png",
         "img/generator/layout/follower_2.png",
-        "img/generator/layout/follower_3.png"
+        "img/generator/layout/follower_3.png",
+        "img/generator/layout/follower_4.png",
       );
     } else {
       loadQueue.push(
@@ -240,6 +283,8 @@ window.onload = function() {
       document.querySelectorAll(".cardData")[i].disabled = false;
     }
     generateButton.innerHTML = "Generate card";
+    hideEvolved.onchange();
+    hideUnevolved.onchange();
 
     // Variable declarations
     var finalTrait = cardTrait.value;
@@ -326,7 +371,7 @@ window.onload = function() {
 
     // Draw class emblem
     if (cardClass.value != 0) {
-      var imageEmblem = loadedImages[7];
+      var imageEmblem = loadedImages[cardType.value == 0? 8 : 7];
       canvas.add(new fabric.Image(imageEmblem, {top: 70, left: 1505}));
     }
 
@@ -440,8 +485,8 @@ window.onload = function() {
     // Follower text box and text
     if (cardType.value == 0) {
       // Parse text
-      parseResults = parseBB(cardText1.value);
-      parseResults2 = parseBB(cardText2.value);
+      parseResults = parseBB(hideUnevolved.checked == true ? cardText2.value : cardText1.value);
+      parseResults2 = parseBB(hideEvolved.checked == true || hideUnevolved.checked == true ? "" : cardText2.value);
 
       // Draw follower text
       var fabricText1 = new fabric.Textbox(parseResults[0], styleFollowerText);
@@ -457,7 +502,11 @@ window.onload = function() {
 
       // Add to canvas
       canvas.add(fabricText1);
-      canvas.add(fabricText2);
+
+      // Only render second textbox if neither unevolved nor evolved text are hidden
+      if (hideEvolved.checked == false && hideUnevolved.checked == false) {
+        canvas.add(fabricText2);
+      }
 
       // Render canvas
       canvas.renderAll();
@@ -483,27 +532,43 @@ window.onload = function() {
         canvas.add(new fabric.Image(loadedImages[4], {top: 394+(40*i), left: 753}));
       };
       currentDrawPosition = 354+(40*i);
-      // Draw unevolved-evolved textbox separator
-      canvas.add(new fabric.Image(loadedImages[5], {top: currentDrawPosition+40, left: 753}));
-      currentDrawPosition += 197;
-      // Draw textbox spaces
-      for (var i = 0; i < lines2 - 1; i++) {
+      if (hideEvolved.checked == false && hideUnevolved.checked == false) {
+        // Draw unevolved-evolved textbox separator
+        canvas.add(new fabric.Image(loadedImages[5], {top: currentDrawPosition+40, left: 753}));
+        currentDrawPosition += 197;
+        // Draw textbox spaces
+        for (var i = 0; i < lines2 - 1; i++) {
+          canvas.add(new fabric.Image(loadedImages[4], {top: currentDrawPosition, left: 753}));
+          currentDrawPosition += 40;
+        };
+      } else {
+        // Draw textbox spaces
         canvas.add(new fabric.Image(loadedImages[4], {top: currentDrawPosition, left: 753}));
         currentDrawPosition += 40;
-      };
+        for (var i = 0; i < lines2 + 3; i++) {
+          canvas.add(new fabric.Image(loadedImages[7], {top: currentDrawPosition, left: 753}));
+          currentDrawPosition += 40;
+        };
+      }
       // Draw textbox closing
       canvas.add(new fabric.Image(loadedImages[6], {top: currentDrawPosition, left: 753}));
 
       // Draw unevolved attack and defense
-      canvas.add(new fabric.Text(cardStats[0].value, {...styleTextboxStats, ...{top: 284, left: 1535}}));
-      canvas.add(new fabric.Text(cardStats[2].value, {...styleTextboxStats, ...{top: 284, left: 1677}}));
-      // Draw evolved attack and defense
-      canvas.add(new fabric.Text(cardStats[1].value, {...styleTextboxStats, ...{top: 398+(40*lines1), left: 1535}}));
-      canvas.add(new fabric.Text(cardStats[3].value, {...styleTextboxStats, ...{top: 398+(40*lines1), left: 1677}}));
+      canvas.add(new fabric.Text(cardStats[hideUnevolved.checked == true ? 1 : 0].value, {...styleTextboxStats, ...{top: 284, left: 1535}}));
+      canvas.add(new fabric.Text(cardStats[hideUnevolved.checked == true ? 3 : 2].value, {...styleTextboxStats, ...{top: 284, left: 1677}}));
+      // Draw evolved attack and defense, but only render second textbox if neither unevolved nor evolved text are hidden
+      if (hideEvolved.checked == false && hideUnevolved.checked == false) {
+        canvas.add(new fabric.Text(cardStats[1].value, {...styleTextboxStats, ...{top: 398+(40*lines1), left: 1535}}));
+        canvas.add(new fabric.Text(cardStats[3].value, {...styleTextboxStats, ...{top: 398+(40*lines1), left: 1677}}));
+      }
 
       // Bring text to front
       canvas.bringToFront(fabricText1);
-      canvas.bringToFront(fabricText2);
+
+      // Only render second textbox if neither unevolved nor evolved text are hidden
+      if (hideEvolved.checked == false && hideUnevolved.checked == false) {
+        canvas.bringToFront(fabricText2);
+      }
     }
 
     // Spell or Amulet text box and text

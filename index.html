@@ -101,12 +101,20 @@
         <form>
           <button type="button" onclick="formatText('form_text1')" class="cardData boldButton">Bold</button>
           <label for="form_text1" id="label_form_text1">Unevolved Text:</label>
+          <span id="hideUnevolved">
+            <input type="checkbox" class="cardData" id="form_hideUnevolved"/>
+            <label for="form_hideUnevolved">Hide</label>
+          </span>
           <br />
           <textarea class="cardData" id="form_text1" rows="12" cols="50"></textarea>
           <br />
           <div id="div_text2">
             <button type="button" onclick="formatText('form_text2')" class="cardData boldButton">Bold</button>
             <label for="form_text2" id="label_form_text2">Evolved Text:</label>
+            <span id="hideEvolved">
+              <input type="checkbox" class="cardData" id="form_hideEvolved"/>
+              <label for="form_hideEvolved">Hide</label>
+            </span>
             <br />
             <textarea class="cardData" id="form_text2" rows="12" cols="50"></textarea>
           </div>
